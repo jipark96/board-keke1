@@ -144,7 +144,12 @@ const Join = () => {
             onValueChange={handlePasswordCheckChange}
             isPasswordMatch={!isPasswordMismatched}
           />
-          <Btn text="완료" disabled={!isFormFilled()} />
+          <Btn
+            text="완료"
+            size="big"
+            disabled={!isFormFilled()}
+            onClick={onClickTest}
+          />
         </JoinWrap>
       </JoinCotainer>
     </>

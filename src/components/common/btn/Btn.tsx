@@ -6,9 +6,14 @@ interface BtnProps extends ButtonStyleProps {
   onClick?: () => void;
 }
 
-const Btn = ({ text, disabled = false, onClick = () => null }: BtnProps) => {
+const Btn = ({
+  text,
+  disabled = false,
+  size,
+  onClick = () => null,
+}: BtnProps) => {
   return (
-    <ButtonWrap onClick={onClick} disabled={disabled}>
+    <ButtonWrap onClick={onClick} disabled={disabled} size={size}>
       {text}
     </ButtonWrap>
   );
