@@ -1,0 +1,154 @@
+import React, { useState } from "react";
+import TextField from "../common/textfield/TextField";
+import { JoinCotainer, JoinTitle, JoinWrap } from "./JoinStyles";
+import { useAppDispatch, useAppSelector } from "../../redux/hooks";
+import { useForm } from "react-hook-form";
+import { setJoinData } from "../../redux/features/join";
+import PasswordField from "../common/passwordfield/PasswordField";
+import Btn from "../common/btn/Btn";
+
+interface FormState {
+  userName: string;
+  name: string;
+  email: string;
+  password: string;
+  passwordCheck: string;
+}
+
+const initialState: FormState = {
+  userName: "",
+  name: "",
+  email: "",
+  password: "",
+  passwordCheck: "",
+};
+
+const Join = () => {
+  //[redux 변수]
+  const dispatch = useAppDispatch();
+  const joinData = useAppSelector((state: any) => state.join);
+
+  //[폼 객체]
+  const [form, setForm] = useState<FormState>(initialState);
+
+  //[리액트 훅 폼]
+  const {
+    register,
+    handleSubmit,
+    watch,
+    reset,
+    formState: { errors },
+  } = useForm();
+
+  //[데이터 테스트]
+  const onClickTest = () => {
+    console.log(form);
+    console.log(joinData);
+  };
+
+  //[아이디 가져오기]
+  const handleUserNameChange = (e: any) => {
+    setForm((prevForm) => ({ ...prevForm, userName: e.target.value }));
+    dispatch(setJoinData({ userName: e.target.value }));
+  };
+
+  //[이메일 가져오기]
+  const handleEmailChange = (value: string) => {
+    setForm((prevForm) => ({ ...prevForm, email: value }));
+    dispatch(setJoinData({ email: value }));
+  };
+
+  //[이름 가져오기]
+  const handleNameChange = (e: any) => {
+    setForm((prevForm) => ({ ...prevForm, name: e.target.value }));
+    dispatch(setJoinData({ name: e.target.value }));
+  };
+
+  //[비밀번호 매치]
+  const [isPasswordMismatched, setPasswordMismatched] = useState(false);
+  const [isPasswordValid, setIsPasswordValid] = useState(false);
+
+  const handlePasswordChange = (value: string) => {
+    setForm((prevForm) => ({ ...prevForm, password: value }));
+    dispatch(setJoinData({ password: value }));
+  };
+
+  const handlePasswordCheckChange = (value: string) => {
+    setForm((prevForm) => ({ ...prevForm, passwordCheck: value }));
+
+    if (form.password !== "" && form.password !== value) {
+      setPasswordMismatched(true);
+    } else {
+      setPasswordMismatched(false);
+    }
+  };
+
+  const handlePasswordValidityChange = (validity: boolean) => {
+    console.log("비밀번호 유효성: ", validity);
+    setIsPasswordValid(validity);
+  };
+
+  //[입력체크]
+  const isFormFilled = () => {
+    return (
+      form.userName &&
+      form.email &&
+      form.name &&
+      form.password &&
+      form.passwordCheck &&
+      !isPasswordMismatched &&
+      isPasswordValid
+    );
+  };
+
+  return (
+    <>
+      <JoinCotainer>
+        <JoinTitle>회원 가입</JoinTitle>
+        <JoinWrap>
+          <TextField
+            title="아이디"
+            type="text"
+            placeholder="아이디를 입력해주세요"
+            value={form.userName}
+            onChange={handleUserNameChange}
+          />
+          <TextField
+            title="이메일"
+            type="text"
+            placeholder="이메일을 입력해주세요"
+            value={form.email}
+            onChange={handleEmailChange}
+          />
+          <TextField
+            title="이름"
+            type="text"
+            placeholder="이름을 입력해주세요"
+            value={form.name}
+            onChange={handleNameChange}
+          />
+          <PasswordField
+            title="비밀번호"
+            type="password"
+            placeholder="영문 소문자 + 숫자 + 기호 조합 8자 이상으로 입력해주세요"
+            required="영문 소문자 + 숫자 + 기호 조합 8자 이상으로 입력해주세요"
+            onValueChange={handlePasswordChange}
+            onValidityChange={handlePasswordValidityChange}
+          />
+
+          <PasswordField
+            title="비밀번호 확인"
+            type="password"
+            placeholder="동일한 비밀번호를 입력해주세요"
+            required="동일한 비밀번호를 입력해주세요"
+            onValueChange={handlePasswordCheckChange}
+            isPasswordMatch={!isPasswordMismatched}
+          />
+          <Btn text="완료" disabled={!isFormFilled()} />
+        </JoinWrap>
+      </JoinCotainer>
+    </>
+  );
+};
+
+export default Join;
