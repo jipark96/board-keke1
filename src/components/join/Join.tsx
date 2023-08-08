@@ -1,15 +1,16 @@
 import React, { useState } from "react";
 import TextField from "../common/textfield/TextField";
 import { JoinCotainer, JoinTitle, JoinWrap } from "./JoinStyles";
-import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import { useForm } from "react-hook-form";
 import { setJoinData } from "../../redux/features/join";
 import PasswordField from "../common/passwordfield/PasswordField";
 import Btn from "../common/btn/Btn";
 import Layout from "../../layout/Layout";
+import axios from "axios";
+import { useDispatch, useSelector } from "react-redux";
 
 interface FormState {
-  userName: string;
+  username: string;
   name: string;
   email: string;
   password: string;
@@ -17,7 +18,7 @@ interface FormState {
 }
 
 const initialState: FormState = {
-  userName: "",
+  username: "",
   name: "",
   email: "",
   password: "",
@@ -25,9 +26,37 @@ const initialState: FormState = {
 };
 
 const Join = () => {
+  const joinSubmit = async () => {
+    const { username, name, email, password, passwordCheck } = joinData;
+    const dataToSend = {
+      username,
+      name,
+      email,
+      password,
+      passwordCheck,
+    };
+
+    console.log("Data to send:", dataToSend);
+
+    try {
+      const response = await axios.post(
+        "http://localhost:8080/user",
+        dataToSend
+      );
+
+      if (response.status === 200) {
+        console.log("등록 성공!");
+      } else {
+        console.error("등록 실패:", response.data);
+      }
+    } catch (error) {
+      console.error("에러:", error);
+    }
+  };
+
   //[redux 변수]
-  const dispatch = useAppDispatch();
-  const joinData = useAppSelector((state: any) => state.join);
+  const dispatch = useDispatch();
+  const joinData = useSelector((state: any) => state.join);
 
   //[폼 객체]
   const [form, setForm] = useState<FormState>(initialState);
@@ -41,24 +70,18 @@ const Join = () => {
     formState: { errors },
   } = useForm();
 
-  //[데이터 테스트]
-  const onClickTest = () => {
-    console.log(form);
-    console.log(joinData);
-  };
-
   //[아이디 가져오기]
   const handleUserNameChange = (e: any) => {
-    setForm((prevForm) => ({ ...prevForm, userName: e.target.value }));
-    dispatch(setJoinData({ userName: e.target.value }));
+    setForm((prevForm) => ({ ...prevForm, username: e.target.value }));
+    dispatch(setJoinData({ username: e.target.value }));
   };
 
   //[이메일 가져오기]
-  const handleEmailChange = (value: string) => {
+  const handleEmailChange = (e: any) => {
+    const value = e.target.value;
     setForm((prevForm) => ({ ...prevForm, email: value }));
     dispatch(setJoinData({ email: value }));
   };
-
   //[이름 가져오기]
   const handleNameChange = (e: any) => {
     setForm((prevForm) => ({ ...prevForm, name: e.target.value }));
@@ -92,7 +115,7 @@ const Join = () => {
   //[입력체크]
   const isFormFilled = () => {
     return (
-      form.userName &&
+      form.username &&
       form.email &&
       form.name &&
       form.password &&
@@ -100,6 +123,11 @@ const Join = () => {
       !isPasswordMismatched &&
       isPasswordValid
     );
+  };
+  //[회원 가입]
+  const onSubmit = () => {
+    joinSubmit();
+    console.log(joinData);
   };
 
   return (
@@ -111,15 +139,15 @@ const Join = () => {
             title="아이디"
             type="text"
             placeholder="아이디를 입력해주세요"
-            value={form.userName}
+            value={form.username}
             onChange={handleUserNameChange}
           />
           <TextField
             title="이메일"
-            type="text"
+            type="email"
             placeholder="이메일을 입력해주세요"
             value={form.email}
-            onChange={handleEmailChange}
+            onChange={(e) => handleEmailChange(e)}
           />
           <TextField
             title="이름"
@@ -149,7 +177,7 @@ const Join = () => {
             text="완료"
             size="big"
             disabled={!isFormFilled()}
-            onClick={onClickTest}
+            onClick={onSubmit}
           />
         </JoinWrap>
       </JoinCotainer>

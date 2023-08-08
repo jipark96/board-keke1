@@ -1,7 +1,10 @@
 import { configureStore } from "@reduxjs/toolkit";
+import join from "./features/join";
 
 const store = configureStore({
-  reducer: {},
+  reducer: {
+    join,
+  },
 });
 
 type RootState = ReturnType<typeof store.getState>;

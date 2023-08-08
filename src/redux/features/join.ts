@@ -1,14 +1,14 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 interface JoinState {
-  userName: string;
+  username: string;
   name: string;
   email: string;
   password: string;
 }
 
 const initialState: JoinState = {
-  userName: "",
+  username: "",
   name: "",
   email: "",
   password: "",
