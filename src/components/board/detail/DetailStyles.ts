@@ -1,37 +1,66 @@
 import { styled } from "styled-components";
 
-export const Wrapper = styled.div`
+export const BoardWrapper = styled.div`
   width: 600px;
-  margin: 0 auto;
-  margin-top: 40px;
-`;
-export const TextWrapper = styled.div`
-  text-align: center;
+  margin: 0 auto 24px auto;
+  border-radius: 10px;
+  opacity: 1;
+  background-color: #fff;
+  padding: 64px;
 `;
 
-export const BtnWrapper = styled.div`
-  display: flex;
+export const BoardHeader = styled.div`
   justify-content: space-between;
-  margin-top: 20px;
-  align-items: center;
+  align-items: baseline;
+  display: flex;
 `;
 
-export const BottomText = styled.div`
-  font-size: 16px;
-  font-weight: 500;
-  margin-top: 40px;
-  color: #8c8c8c;
-  text-decoration-line: underline;
-  cursor: pointer;
-`;
-export const BtnWrapperLeft = styled.div`
-  display: flex;
-  justify-content: flex-start;
-  align-items: center;
+export const UserName = styled.div`
+  font-size: 32px;
 `;
 
-export const BtnWrapperRight = styled.div`
+export const Date = styled.div`
+  font-size: 24px;
+  vertical-align: baseline;
+`;
+
+export const BoardBody = styled.div`
   display: flex;
-  justify-content: flex-end;
-  align-items: center;
+`;
+
+export const BoardImg = styled.div`
+  flex-shrink: 0;
+  margin-right: 16px;
+  width: 50%;
+  height: 100%;
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+`;
+
+export const TitleWrap = styled.div`
+  word-break: break-all;
+  margin-left: 16px;
+  overflow: auto;
+  flex-grow: 1;
+`;
+
+export const BoardTitle = styled.div`
+  font-size: 28px;
+  font-weight: bold;
+  margin-bottom: 8px;
+  color: midnightblue;
+`;
+export const BoardContent = styled.div`
+  font-size: 18px;
+`;
+
+export const EditDeleteButton = styled.div`
+  display: flex;
+  flex-direction: row-reverse;
+  margin-bottom: 12px;
+  gap: 10px;
 `;

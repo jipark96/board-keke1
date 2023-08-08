@@ -1,32 +1,44 @@
 import React from "react";
 import {
-  BottomText,
-  BtnWrapper,
-  BtnWrapperLeft,
-  BtnWrapperRight,
-  TextWrapper,
-  Wrapper,
+  BoardBody,
+  BoardContent,
+  BoardHeader,
+  BoardImg,
+  BoardTitle,
+  BoardWrapper,
+  Date,
+  EditDeleteButton,
+  TitleWrap,
+  UserName,
 } from "./DetailStyles";
+import Btn from "../../common/btn/Btn";
+import Comment from "./comment/Comment";
+import Layout from "../../../layout/Layout";
 
 const Detail = () => {
   return (
-    <>
-      <Wrapper>
-        <TextWrapper>
-          <h1>제목입니다.</h1>
-          <p>내용이 들어갈 부분입니다.</p>
-        </TextWrapper>
-        <BtnWrapper>
-          <BtnWrapperLeft>
-            <BottomText>댓글</BottomText>
-          </BtnWrapperLeft>
-          <BtnWrapperRight>
-            <BottomText>수정</BottomText>
-            <BottomText>삭제</BottomText>
-          </BtnWrapperRight>
-        </BtnWrapper>
-      </Wrapper>
-    </>
+    <Layout>
+      <BoardWrapper>
+        <EditDeleteButton>
+          <Btn text="수정" size="small" />
+          <Btn text="삭제" size="small" />
+        </EditDeleteButton>
+        <BoardHeader>
+          <UserName>아이디</UserName>
+          <Date>날짜</Date>
+        </BoardHeader>
+        <hr />
+        <BoardBody>
+          <BoardImg></BoardImg>
+          <TitleWrap>
+            <BoardTitle>제목</BoardTitle>
+            <BoardContent>내용</BoardContent>
+          </TitleWrap>
+        </BoardBody>
+        <hr />
+        <Comment />
+      </BoardWrapper>
+    </Layout>
   );
 };
 

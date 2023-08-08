@@ -6,7 +6,7 @@ export const JoinCotainer = styled.div`
   flex-direction: column;
   align-items: flex-start;
   justify-content: center;
-  margin-top: 60px;
+  margin-top: 80px;
   margin-left: auto;
   margin-right: auto;
   margin-bottom: 100px;

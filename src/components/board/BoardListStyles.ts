@@ -3,7 +3,7 @@ import { styled } from "styled-components";
 export const Wrapper = styled.div`
   width: 600px;
   margin: 0 auto;
-  margin-top: 40px;
+  margin-top: 80px;
 `;
 
 export const Cotainer = styled.table`

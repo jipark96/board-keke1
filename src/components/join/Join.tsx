@@ -6,6 +6,7 @@ import { useForm } from "react-hook-form";
 import { setJoinData } from "../../redux/features/join";
 import PasswordField from "../common/passwordfield/PasswordField";
 import Btn from "../common/btn/Btn";
+import Layout from "../../layout/Layout";
 
 interface FormState {
   userName: string;
@@ -102,7 +103,7 @@ const Join = () => {
   };
 
   return (
-    <>
+    <Layout>
       <JoinCotainer>
         <JoinTitle>회원 가입</JoinTitle>
         <JoinWrap>
@@ -152,7 +153,7 @@ const Join = () => {
           />
         </JoinWrap>
       </JoinCotainer>
-    </>
+    </Layout>
   );
 };
 

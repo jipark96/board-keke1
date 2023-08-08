@@ -8,6 +8,7 @@ import {
 } from "./BoardListStyles";
 import Btn from "../common/btn/Btn";
 import { useNavigate } from "react-router-dom";
+import Layout from "../../layout/Layout";
 
 const BoardList = () => {
   const navigation = useNavigate();
@@ -16,7 +17,7 @@ const BoardList = () => {
     navigation("/board/write");
   };
   return (
-    <>
+    <Layout>
       <Wrapper>
         <Cotainer>
           <thead>
@@ -41,7 +42,7 @@ const BoardList = () => {
           />
         </BtnWrapper>
       </Wrapper>
-    </>
+    </Layout>
   );
 };
 
