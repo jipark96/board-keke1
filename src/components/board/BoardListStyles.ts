@@ -1,53 +1,75 @@
 import { styled } from "styled-components";
 
-export const Wrapper = styled.div`
+export const BoardListCotainer = styled.div`
+  background-color: lightgray;
+`;
+
+export const BoardListWrapper = styled.div`
   width: 600px;
   margin: 0 auto;
-  margin-top: 80px;
+  margin-top: 60px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 `;
 
-export const Cotainer = styled.table`
-  border-collapse: separate;
-  border-spacing: 0;
-  text-align: left;
-  line-height: 1.5;
-  border-top: 1px solid #ccc;
-  border-left: 1px solid #ccc;
-  margin: 20px 10px;
-`;
-
-export const Title = styled.th`
-  width: 150px;
-  padding: 10px;
-  font-weight: bold;
-  vertical-align: top;
-  border-right: 1px solid #ccc;
-  border-bottom: 1px solid #ccc;
-  border-top: 1px solid #fff;
-  border-left: 1px solid #fff;
-  background: #eee;
-`;
-
-export const Content = styled.td`
-  width: 350px;
-  padding: 10px;
-  vertical-align: top;
-  border-right: 1px solid #ccc;
-  border-bottom: 1px solid #ccc;
-`;
-
-export const Input1 = styled.input`
-  width: 250px;
-  height: 32px;
-  font-size: 15px;
-  border: 0;
-  border-radius: 15px;
-  outline: none;
-  padding-left: 10px;
-  background-color: rgb(233, 233, 233);
-`;
-
-export const BtnWrapper = styled.div`
+export const BoardHeader = styled.div`
+  font-size: 24px;
+  font-weight: 600;
   display: flex;
   justify-content: flex-end;
+`;
+
+export const BoardBody = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: nowrap;
+  flex-direction: row;
+`;
+
+export const BoardFooter = styled.div`
+  margin: 24px;
+`;
+
+export const BoardCard = styled.div`
+  width: 300px;
+  height: 600px;
+  flex-shrink: 0;
+  margin: 16px;
+  border-radius: 10px;
+  box-shadow: rgba(0.2, 0.2, 0.2, 0.2) 1px 2px 1px -1px,
+    rgba(0.2, 0, 0.2, 0.2) 0px 1px 1px 0px, rgba(0, 0, 0, 0) 0px 1px 3px 0px;
+  background-color: #fff;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  cursor: pointer;
+`;
+
+export const BoardImg = styled.div`
+  width: 100%;
+  height: 60%;
+`;
+
+export const BoardText = styled.div`
+  flex-grow: 1;
+  word-break: break-all;
+  overflow: auto;
+  padding: 10px;
+`;
+
+export const BoardTitle = styled.div`
+  font-size: 20px;
+  color: gray;
+  font-weight: 600;
+`;
+
+export const BoardCardFooter = styled.div`
+  border-top: 1px solid black;
+  padding: 8px;
+  display: flex;
+  color: #282c34;
+  font-size: 16px;
+  justify-content: space-between;
 `;

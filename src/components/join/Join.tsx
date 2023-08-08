@@ -8,6 +8,7 @@ import Btn from "../common/btn/Btn";
 import Layout from "../../layout/Layout";
 import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 
 interface FormState {
   username: string;
@@ -26,6 +27,8 @@ const initialState: FormState = {
 };
 
 const Join = () => {
+  const navigation = useNavigate();
+
   const joinSubmit = async () => {
     const { username, name, email, password, passwordCheck } = joinData;
     const dataToSend = {
@@ -127,6 +130,7 @@ const Join = () => {
   //[회원 가입]
   const onSubmit = () => {
     joinSubmit();
+    navigation("/login");
     console.log(joinData);
   };
 
