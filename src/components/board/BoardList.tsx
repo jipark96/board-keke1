@@ -25,7 +25,7 @@ interface Post {
   createdAt: string;
 }
 
-const List = () => {
+const BoardList = () => {
   const [posts, setPosts] = useState<Post[]>([]);
 
   const navigation = useNavigate();
@@ -93,4 +93,4 @@ const List = () => {
   );
 };
 
-export default List;
+export default BoardList;

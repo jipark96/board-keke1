@@ -20,12 +20,22 @@ const Write = () => {
     setContent(event.target.value);
   };
 
+  const jwtToken = localStorage.getItem("jwtToken");
+
   const handleSubmit = async () => {
     try {
-      await axios.post("http://localhost:8080/board", {
-        title: title,
-        content: content,
-      });
+      await axios.post(
+        "http://localhost:8080/board",
+        {
+          title: title,
+          content: content,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${jwtToken}`,
+          },
+        }
+      );
       alert("게시물 작성 완료");
       navigation("/board");
     } catch (error) {

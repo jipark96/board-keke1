@@ -16,7 +16,7 @@ export const BoardHeader = styled.div`
 `;
 
 export const UserName = styled.div`
-  font-size: 32px;
+  font-size: 20px;
 `;
 
 export const Date = styled.div`
