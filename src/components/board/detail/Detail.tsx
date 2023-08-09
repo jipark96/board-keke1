@@ -1,12 +1,10 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import {
   BoardBody,
   BoardContent,
   BoardHeader,
-  BoardImg,
   BoardTitle,
   BoardWrapper,
-  Date,
   EditDeleteButton,
   TitleWrap,
   UserName,
@@ -14,29 +12,77 @@ import {
 import Btn from "../../common/btn/Btn";
 import Comment from "./comment/Comment";
 import Layout from "../../../layout/Layout";
+import axios from "axios";
+import { useNavigate, useParams } from "react-router-dom";
+import { formatDate } from "../../../utils/Utils";
+
+interface Post {
+  id: number;
+  title: string;
+  content: string;
+  username: string;
+  createdAt: string;
+  commentList: string[];
+}
 
 const Detail = () => {
+  const { boardId } = useParams<{ boardId: string }>();
+  const [post, setPost] = useState<Post | null>(null);
+  const navigation = useNavigate();
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await axios.get(
+          `http://localhost:8080/board/${boardId}`
+        );
+        setPost(response.data.result);
+      } catch (error) {
+        console.error("Error fetching post:", error);
+      }
+    };
+    fetchData();
+  }, [boardId]);
+
+  const handleDelete = async () => {
+    if (window.confirm("정말로 이 게시물을 삭제하시겠습니까?")) {
+      try {
+        await axios.delete(`http://localhost:8080/board/${boardId}`);
+        navigation("/board");
+      } catch (error) {
+        console.error("Error deleting post:", error);
+      }
+    }
+  };
+
   return (
     <Layout>
       <BoardWrapper>
-        <EditDeleteButton>
-          <Btn text="수정" size="small" />
-          <Btn text="삭제" size="small" />
-        </EditDeleteButton>
-        <BoardHeader>
-          <UserName>아이디</UserName>
-          <Date>날짜</Date>
-        </BoardHeader>
-        <hr />
-        <BoardBody>
-          <BoardImg></BoardImg>
-          <TitleWrap>
-            <BoardTitle>제목</BoardTitle>
-            <BoardContent>내용</BoardContent>
-          </TitleWrap>
-        </BoardBody>
-        <hr />
-        <Comment />
+        {post && (
+          <>
+            <EditDeleteButton>
+              <Btn text="삭제" size="small" onClick={handleDelete} />
+              <Btn
+                text="수정"
+                size="small"
+                onClick={() => navigation(`/board/edit/${post.id}`)}
+              />
+            </EditDeleteButton>
+            <BoardHeader>
+              <UserName>{post.username}</UserName>
+              {formatDate(post.createdAt)}
+            </BoardHeader>
+            <hr />
+            <BoardBody>
+              <TitleWrap>
+                <BoardTitle>{post.title}</BoardTitle>
+                <BoardContent>{post.content}</BoardContent>
+              </TitleWrap>
+            </BoardBody>
+            <hr />
+            <Comment commentList={post.commentList} />
+          </>
+        )}
       </BoardWrapper>
     </Layout>
   );

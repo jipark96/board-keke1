@@ -16,6 +16,7 @@ import {
 import axios from "axios";
 import Layout from "../../layout/Layout";
 import Btn from "../common/btn/Btn";
+import { formatDate } from "../../utils/Utils";
 
 interface Post {
   id: number;
@@ -31,36 +32,6 @@ const List = () => {
 
   const handleBtnClick = () => {
     navigation("/board/write");
-  };
-  //[날짜 변환]
-  const formatDate = (input: string | any[]) => {
-    let date: Date;
-
-    if (typeof input === "string") {
-      const correctedDateString = input.replace(" ", "T") + "Z";
-      date = new Date(correctedDateString);
-    } else if (Array.isArray(input) && input.length >= 3) {
-      const year = input[0];
-      const month = input[1] - 1;
-      const day = input[2];
-      const hours = input[3] || 0;
-      const minutes = input[4] || 0;
-      date = new Date(year, month, day, hours, minutes);
-    } else {
-      console.error("Invalid input:", input);
-      return "";
-    }
-
-    const formatter = new Intl.DateTimeFormat("ko-KR", {
-      year: "numeric",
-      month: "2-digit",
-      day: "2-digit",
-      hour: "2-digit",
-      minute: "2-digit",
-      hour12: false,
-    });
-
-    return formatter.format(date);
   };
 
   useEffect(() => {
@@ -96,7 +67,12 @@ const List = () => {
               {posts.map((post) => (
                 <tr key={post.id}>
                   <Content>{post.id}</Content>
-                  <Content>{post.title}</Content>
+                  <Content
+                    onClick={() => navigation(`/board/${post.id}`)}
+                    style={{ cursor: "pointer" }}
+                  >
+                    {post.title}
+                  </Content>
                   <Content>{post.username}</Content>
                   <Content>{formatDate(post.createdAt)}</Content>
                 </tr>

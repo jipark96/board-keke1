@@ -24,8 +24,8 @@ const App: React.FunctionComponent = () => {
           <Route path="/board" element={<BoardListPage />} />
           <Route path="/" element={<BoardListPage />} />
           <Route path="/board/write" element={<WritePage />} />
-          <Route path="/board/edit" element={<EditPage />} />
-          <Route path="/board/detail" element={<DetailPage />} />
+          <Route path="/board/edit/:boardId" element={<EditPage />} />
+          <Route path="/board/:boardId" element={<DetailPage />} />
           <Route path="/404" element={<Page404 />} />
           <Route path="/500" element={<Page500 />} />
         </Routes>

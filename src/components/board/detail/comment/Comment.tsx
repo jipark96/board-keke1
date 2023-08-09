@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   Comment1,
   CommentContent,
@@ -10,22 +10,52 @@ import {
 } from "./CommentStyles";
 
 import Btn from "../../../common/btn/Btn";
+import axios from "axios";
+import { useParams } from "react-router-dom";
 
-const Comment = () => {
+interface CommentProps {
+  commentList: string[];
+}
+
+const Comment: React.FC<CommentProps> = ({ commentList }) => {
+  const { boardId } = useParams<{ boardId: string }>();
+  const [commentInput, setCommentInput] = useState("");
+  const [comments, setComments] = useState<string[]>(commentList);
+
+  const handleSubmitComment = async () => {
+    try {
+      const response = await axios.post(`http://localhost:8080/comment`, {
+        boardId: boardId,
+        content: commentInput,
+      });
+
+      setComments([...comments, response.data.result.content]);
+      setCommentInput("");
+    } catch (error) {
+      console.error("Error adding comment:", error);
+    }
+  };
+
   return (
     <>
       <CommentHeader>
-        <Input />
-        <Btn text="등록" size="small" />
+        <Input
+          placeholder="댓글을 입력하세요."
+          value={commentInput}
+          onChange={(e) => setCommentInput(e.target.value)}
+        />
+        <Btn text="등록" size="small" onClick={handleSubmitComment} />
       </CommentHeader>
-      <Comment1>
-        <CommentDateWrap>
-          <CommentDate>날짜</CommentDate>
-        </CommentDateWrap>
-        <CommentContent>내용</CommentContent>
-        <CommentUserName>아이디</CommentUserName>
-        <hr />
-      </Comment1>
+      {comments.map((comment, index) => (
+        <Comment1 key={index}>
+          <CommentDateWrap>
+            <CommentDate>날짜</CommentDate>
+          </CommentDateWrap>
+          <CommentContent>{comment}</CommentContent>
+          <CommentUserName>아이디</CommentUserName>
+          <hr />
+        </Comment1>
+      ))}
     </>
   );
 };
