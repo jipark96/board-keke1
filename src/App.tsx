@@ -6,7 +6,6 @@ import BoardListPage from "./pages/board/BoardList";
 import WritePage from "./pages/board/write/Write";
 import EditPage from "./pages/board/edit/Edit";
 import DetailPage from "./pages/board/detail/Detail";
-import ListPage from "./pages/board/list/List";
 
 const loading = <div>화면을 불러오는 중 입니다.</div>;
 
@@ -24,7 +23,6 @@ const App: React.FunctionComponent = () => {
           <Route path="/join" element={<JoinPage />} />
           <Route path="/board" element={<BoardListPage />} />
           <Route path="/" element={<BoardListPage />} />
-          <Route path="/board/list" element={<ListPage />} />
           <Route path="/board/write" element={<WritePage />} />
           <Route path="/board/edit" element={<EditPage />} />
           <Route path="/board/detail" element={<DetailPage />} />
