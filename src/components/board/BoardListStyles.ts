@@ -1,9 +1,5 @@
 import { styled } from "styled-components";
 
-export const BoardListCotainer = styled.div`
-  background-color: lightgray;
-`;
-
 export const BoardListWrapper = styled.div`
   width: 600px;
   margin: 0 auto;
