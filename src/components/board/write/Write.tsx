@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { BtnWrapper, Input1, Input2, Wrapper } from "./WriteStyles";
 import Btn from "../../common/btn/Btn";
 import { useNavigate } from "react-router-dom";
@@ -21,11 +21,12 @@ const Write = () => {
   };
 
   const jwtToken = localStorage.getItem("jwtToken");
+  const username = localStorage.getItem("username");
 
   const handleSubmit = async () => {
     try {
       await axios.post(
-        "http://localhost:8080/board",
+        `http://localhost:8080/board`,
         {
           title: title,
           content: content,
@@ -33,6 +34,9 @@ const Write = () => {
         {
           headers: {
             Authorization: `Bearer ${jwtToken}`,
+          },
+          params: {
+            username: username,
           },
         }
       );

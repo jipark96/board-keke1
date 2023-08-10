@@ -69,7 +69,7 @@ const Detail = () => {
               />
             </EditDeleteButton>
             <BoardHeader>
-              <UserName>아이디{post.username}</UserName>
+              <UserName>아이디: {post.username}</UserName>
               {formatDate(post.createdAt)}
             </BoardHeader>
             <hr />

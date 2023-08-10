@@ -22,12 +22,26 @@ const Comment: React.FC<CommentProps> = ({ commentList }) => {
   const [commentInput, setCommentInput] = useState("");
   const [comments, setComments] = useState<string[]>(commentList);
 
+  const jwtToken = localStorage.getItem("jwtToken");
+  const username = localStorage.getItem("username");
+
   const handleSubmitComment = async () => {
     try {
-      const response = await axios.post(`http://localhost:8080/comment`, {
-        boardId: boardId,
-        content: commentInput,
-      });
+      const response = await axios.post(
+        `http://localhost:8080/board/${boardId}/comment`,
+        {
+          boardId: boardId,
+          content: commentInput,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${jwtToken}`,
+          },
+          params: {
+            username: username,
+          },
+        }
+      );
 
       setComments([...comments, response.data.result.content]);
       setCommentInput("");
@@ -52,7 +66,7 @@ const Comment: React.FC<CommentProps> = ({ commentList }) => {
             <CommentDate>날짜</CommentDate>
           </CommentDateWrap>
           <CommentContent>{comment}</CommentContent>
-          <CommentUserName>아이디</CommentUserName>
+          <CommentUserName>{username}</CommentUserName>
           <hr />
         </Comment1>
       ))}

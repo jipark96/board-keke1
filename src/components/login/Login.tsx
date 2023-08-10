@@ -45,6 +45,7 @@ const Login = () => {
       const name = response.data.result.name;
       localStorage.setItem("jwtToken", jwtToken);
       localStorage.setItem("name", name);
+      localStorage.setItem("username", username);
       navigate("/board");
       console.log(response);
     } catch (error) {
