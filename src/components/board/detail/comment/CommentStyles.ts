@@ -1,7 +1,7 @@
 import { styled } from "styled-components";
 
 export const CommentHeader = styled.div`
-  margin: 1rem 0;
+  margin: 16px 0;
   display: flex;
 `;
 
@@ -36,4 +36,9 @@ export const CommentUserName = styled.div`
   flex-direction: row-reverse;
   align-items: baseline;
   font-weight: 600;
+`;
+
+export const ButtonWrap = styled.div`
+  display: flex;
+  justify-content: space-between;
 `;

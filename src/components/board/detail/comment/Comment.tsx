@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import {
+  ButtonWrap,
   Comment1,
   CommentContent,
   CommentDate,
@@ -30,6 +31,9 @@ const Comment: React.FC<CommentProps> = ({ commentList }) => {
   const { boardId } = useParams<{ boardId: string }>();
   const [commentInput, setCommentInput] = useState("");
   const [comments, setComments] = useState(commentList);
+
+  const [editingCommentId, setEditingCommentId] = useState<number | null>(null); // 수정 중인 댓글의 ID
+  const [editedContent, setEditedContent] = useState(""); // 수정 중인 댓글의 내용
 
   const jwtToken = localStorage.getItem("jwtToken");
   const username = localStorage.getItem("username");
@@ -84,6 +88,37 @@ const Comment: React.FC<CommentProps> = ({ commentList }) => {
     }
   };
 
+  //[댓글 수정]
+  const handleEditComment = async (commentId: number) => {
+    try {
+      await axios.patch(
+        `http://localhost:8080/board/${boardId}/comment/${commentId}`,
+        {
+          content: editedContent,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${jwtToken}`,
+          },
+        }
+      );
+
+      // 수정된 댓글 내용 업데이트
+      setComments((prevComments) =>
+        prevComments.map((comment) =>
+          comment.id === commentId
+            ? { ...comment, content: editedContent }
+            : comment
+        )
+      );
+
+      // 수정 모드 종료
+      setEditingCommentId(null);
+      setEditedContent("");
+    } catch (error) {
+      console.error("Error editing comment:", error);
+    }
+  };
   return (
     <>
       <CommentHeader>
@@ -101,10 +136,31 @@ const Comment: React.FC<CommentProps> = ({ commentList }) => {
           </CommentDateWrap>
           <CommentContent>{comment.content}</CommentContent>
           <CommentUserName>{comment.username}</CommentUserName>
-          {comment.username === username && (
-            <Remove onClick={() => handleDeleteComment(comment.id)}>
-              삭제
-            </Remove>
+          {editingCommentId === comment.id ? (
+            <CommentHeader>
+              <Input
+                value={editedContent}
+                onChange={(e) => setEditedContent(e.target.value)}
+              />
+              <Btn
+                text="수정"
+                size="small"
+                onClick={() => handleEditComment(comment.id)}
+              />
+            </CommentHeader>
+          ) : (
+            <>
+              {comment.username === username && (
+                <ButtonWrap>
+                  <Remove onClick={() => setEditingCommentId(comment.id)}>
+                    수정
+                  </Remove>
+                  <Remove onClick={() => handleDeleteComment(comment.id)}>
+                    삭제
+                  </Remove>
+                </ButtonWrap>
+              )}
+            </>
           )}
 
           <hr />

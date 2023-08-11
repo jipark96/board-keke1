@@ -16,7 +16,7 @@ export const BoardHeader = styled.div`
 `;
 
 export const UserName = styled.div`
-  font-size: 20px;
+  font-size: 18px;
 `;
 
 export const Remove = styled.div`
@@ -26,8 +26,11 @@ export const Remove = styled.div`
 `;
 
 export const Date = styled.div`
-  font-size: 24px;
-  vertical-align: baseline;
+  font-size: 16px;
+`;
+export const View = styled.div`
+  font-size: 16px;
+  margin-left: 10px;
 `;
 
 export const BoardBody = styled.div`
@@ -55,13 +58,13 @@ export const TitleWrap = styled.div`
 `;
 
 export const BoardTitle = styled.div`
-  font-size: 28px;
-  font-weight: bold;
+  font-size: 24px;
+  font-weight: 600;
   margin-bottom: 8px;
-  color: midnightblue;
 `;
+
 export const BoardContent = styled.div`
-  font-size: 18px;
+  font-size: 16px;
 `;
 
 export const EditDeleteButton = styled.div`

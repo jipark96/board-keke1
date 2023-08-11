@@ -5,6 +5,7 @@ import {
   BoardHeader,
   BoardTitle,
   BoardWrapper,
+  Date,
   EditDeleteButton,
   TitleWrap,
   UserName,
@@ -22,6 +23,7 @@ interface Post {
   content: string;
   username: string;
   createdAt: string;
+  view: number;
   commentList: {
     id: number;
     boardId: number;
@@ -81,7 +83,9 @@ const Detail = () => {
             )}
             <BoardHeader>
               <UserName>아이디: {post.username}</UserName>
-              {formatDate(post.createdAt)}
+              <Date>
+                {formatDate(post.createdAt)} 조회수: {post.view}
+              </Date>
             </BoardHeader>
             <hr />
             <BoardBody>
