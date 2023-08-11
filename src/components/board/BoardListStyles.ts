@@ -41,7 +41,7 @@ export const TitleNumber = styled(Title)`
 `;
 
 export const TitleMain = styled(Title)`
-  width: 55%;
+  width: 45%;
 `;
 
 export const TitleOther1 = styled(Title)`
@@ -71,4 +71,21 @@ export const Input1 = styled.input`
 export const BtnWrapper = styled.div`
   display: flex;
   justify-content: flex-end;
+`;
+export const PageWrap = styled.ul`
+  display: flex;
+  justify-content: center;
+  list-style: none;
+  width: 100%;
+  align-items: center;
+`;
+
+export const PageNumber = styled.li<{ active: boolean }>`
+  cursor: pointer;
+  margin-right: 8px;
+  font-weight: ${(props) => (props.active ? "bold" : "normal")};
+`;
+export const PageArrow = styled.li`
+  cursor: pointer;
+  margin-right: 8px;
 `;
