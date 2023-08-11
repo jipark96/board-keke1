@@ -20,6 +20,7 @@ export const HeaderTitle = styled.div`
   font-size: 16px;
   display: flex;
   align-items: center;
+  cursor: pointer;
 `;
 
 export const HeaderMenu = styled.div`
@@ -29,4 +30,5 @@ export const HeaderMenu = styled.div`
   flex-shrink: 0;
   margin: 0 16px;
   gap: 8px;
+  cursor: pointer;
 `;

@@ -22,13 +22,22 @@ interface Post {
   content: string;
   username: string;
   createdAt: string;
-  commentList: string[];
+  commentList: {
+    id: number;
+    boardId: number;
+    userId: number;
+    username: string;
+    content: string;
+    createdAt: string;
+  }[];
 }
 
 const Detail = () => {
   const { boardId } = useParams<{ boardId: string }>();
   const [post, setPost] = useState<Post | null>(null);
   const navigation = useNavigate();
+
+  const username = localStorage.getItem("username");
 
   useEffect(() => {
     const fetchData = async () => {
@@ -60,14 +69,16 @@ const Detail = () => {
       <BoardWrapper>
         {post && (
           <>
-            <EditDeleteButton>
-              <Btn text="삭제" size="small" onClick={handleDelete} />
-              <Btn
-                text="수정"
-                size="small"
-                onClick={() => navigation(`/board/edit/${post.id}`)}
-              />
-            </EditDeleteButton>
+            {post.username === username && (
+              <EditDeleteButton>
+                <Btn text="삭제" size="small" onClick={handleDelete} />
+                <Btn
+                  text="수정"
+                  size="small"
+                  onClick={() => navigation(`/board/edit/${post.id}`)}
+                />
+              </EditDeleteButton>
+            )}
             <BoardHeader>
               <UserName>아이디: {post.username}</UserName>
               {formatDate(post.createdAt)}

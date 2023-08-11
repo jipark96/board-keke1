@@ -19,6 +19,12 @@ export const UserName = styled.div`
   font-size: 20px;
 `;
 
+export const Remove = styled.div`
+  cursor: pointer;
+  font-size: 16px;
+  color: gray;
+`;
+
 export const Date = styled.div`
   font-size: 24px;
   vertical-align: baseline;

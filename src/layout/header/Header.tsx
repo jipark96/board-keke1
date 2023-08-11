@@ -5,52 +5,62 @@ import { HeaderMenu, HeaderTitle, HeaderWrapper } from "./HeaderStyles";
 const Header = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [name, setName] = useState("");
+  const navigation = useNavigate();
 
-  const checkLoginStatus = () => {
-    const token = localStorage.getItem("jwtToken");
-    const storedName = localStorage.getItem("name");
+  const handleBoard = () => {
+    navigation("/board");
+  };
+  const handleBoardWrite = () => {
+    navigation("/board/write");
+  };
 
-    if (token && storedName) {
+  const handleLogin = () => {
+    navigation("/login");
+  };
+
+  const handleJoin = () => {
+    navigation("/join");
+  };
+
+  useEffect(() => {
+    const jwtToken = localStorage.getItem("jwtToken");
+    const name = localStorage.getItem("name");
+    const username = localStorage.getItem("username");
+
+    if (jwtToken && name && username) {
       setIsLoggedIn(true);
-      setName(storedName);
+      setName(name);
     } else {
       setIsLoggedIn(false);
       setName("");
     }
-  };
+  }, [isLoggedIn]);
 
-  useEffect(() => {
-    checkLoginStatus();
-  }, []);
+  const handleLogout = () => {
+    localStorage.removeItem("jwtToken");
+    localStorage.removeItem("name");
+    localStorage.removeItem("username");
+    setIsLoggedIn(false);
+
+    window.dispatchEvent(new Event("logout"));
+    navigation("#");
+  };
 
   return (
     <HeaderWrapper>
-      <HeaderTitle>
-        <Link to="/board">
-          <span>Board</span>
-        </Link>
-      </HeaderTitle>
+      <HeaderTitle onClick={handleBoard}>Board</HeaderTitle>
       <HeaderMenu>
-        <Link to="/board">게시판</Link>
-        <Link to="/board/write">글쓰기</Link>
+        <span onClick={handleBoard}>게시판</span>
+        <span onClick={handleBoardWrite}>글쓰기</span>
         {isLoggedIn ? (
           <>
             <span>{name}</span>
-            <Link
-              to="#"
-              onClick={() => {
-                localStorage.removeItem("jwtToken");
-                localStorage.removeItem("name");
-                setIsLoggedIn(false);
-              }}
-            >
-              로그아웃
-            </Link>
+            <span onClick={handleLogout}>로그아웃</span>
           </>
         ) : (
           <>
-            <Link to="/login">로그인</Link>
-            <Link to="/join">회원가입</Link>
+            <span onClick={handleLogin}>로그인</span>
+            <span onClick={handleJoin}>회원가입</span>
           </>
         )}
       </HeaderMenu>
