@@ -6,9 +6,11 @@ import {
   BtnWrapper,
   Content,
   Cotainer,
+  Input,
   PageArrow,
   PageNumber,
   PageWrap,
+  SearchWrap,
   TitleMain,
   TitleNumber,
   TitleOther1,
@@ -33,6 +35,7 @@ const BoardList = () => {
   const [posts, setPosts] = useState<BoardListProps[]>([]);
   const [currentPage, setCurrentPage] = useState<number>(0);
   const [totalPages, setTotalPages] = useState<number>(0);
+  const [searchKeyword, setSearchKeyword] = useState<string>("");
 
   const navigation = useNavigate();
 
@@ -69,11 +72,28 @@ const BoardList = () => {
     }
   };
 
+  //[검색]
+  const handleSearch = async () => {
+    try {
+      const response = await axios.get(
+        `http://localhost:8080/board?page=${currentPage}&size=8&keyword=${searchKeyword}`
+      );
+      const result = response.data.result.boardList;
+      setPosts(result);
+      // 전체 페이지 수 계산
+      const totalCount = response.data.result.totalCount;
+      const totalPages = Math.ceil(totalCount / 8);
+      setTotalPages(totalPages);
+    } catch (error) {
+      console.error("Error fetching posts:", error);
+    }
+  };
+
   useEffect(() => {
     const fetchPosts = async () => {
       try {
         const response = await axios.get(
-          `http://localhost:8080/board?page=${currentPage}`
+          `http://localhost:8080/board?page=${currentPage}&size=8`
         );
         const result = response.data.result.boardList;
         setPosts(result);
@@ -88,7 +108,7 @@ const BoardList = () => {
     };
 
     fetchPosts();
-  }, [currentPage]);
+  }, [currentPage, searchKeyword]);
 
   return (
     <>
@@ -104,7 +124,7 @@ const BoardList = () => {
               <TitleNumber>조회수</TitleNumber>
             </thead>
             <tbody>
-              {posts.map((post) => (
+              {posts.map((post, i) => (
                 <tr key={post.id}>
                   <Content>{post.id}</Content>
                   <Content
@@ -120,14 +140,22 @@ const BoardList = () => {
               ))}
             </tbody>
           </Cotainer>
-          <BtnWrapper>
-            <Btn
-              text="글쓰기"
-              size="small"
-              disabled={false}
-              onClick={handleBtnClick}
+          <SearchWrap>
+            <Input
+              placeholder="키워드를 입력하세요"
+              value={searchKeyword}
+              onChange={(e) => setSearchKeyword(e.target.value)}
             />
-          </BtnWrapper>
+            <Btn text="검색" size="small" onClick={handleSearch} />
+            <BtnWrapper>
+              <Btn
+                text="글쓰기"
+                size="small"
+                disabled={false}
+                onClick={handleBtnClick}
+              />
+            </BtnWrapper>
+          </SearchWrap>
           <PageWrap>
             <PageArrow onClick={handlePrevPage}>{"<"}</PageArrow>
             {Array.from({ length: totalPages }, (_, index) => (

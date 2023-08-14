@@ -28,10 +28,6 @@ export const Remove = styled.div`
 export const Date = styled.div`
   font-size: 16px;
 `;
-export const View = styled.div`
-  font-size: 16px;
-  margin-left: 10px;
-`;
 
 export const BoardBody = styled.div`
   display: flex;

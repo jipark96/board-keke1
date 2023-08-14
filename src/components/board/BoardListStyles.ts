@@ -68,9 +68,9 @@ export const Input1 = styled.input`
   padding-left: 10px;
   background-color: rgb(233, 233, 233);
 `;
+
 export const BtnWrapper = styled.div`
-  display: flex;
-  justify-content: flex-end;
+  margin-left: 36px;
 `;
 export const PageWrap = styled.ul`
   display: flex;
@@ -88,4 +88,15 @@ export const PageNumber = styled.li<{ active: boolean }>`
 export const PageArrow = styled.li`
   cursor: pointer;
   margin-right: 8px;
+`;
+
+export const SearchWrap = styled.div`
+  margin: 20px 10px;
+  display: flex;
+`;
+
+export const Input = styled.input`
+  height: 42px;
+  width: 520px;
+  margin-right: 16px;
 `;
