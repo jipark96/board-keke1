@@ -1,13 +1,21 @@
-import React, { useEffect, useState } from "react";
-import { BtnWrapper, Input1, Input2, Wrapper } from "./WriteStyles";
+import React, { useState } from "react";
+import {
+  BtnWrapper,
+  LargeTextFieldInput,
+  LargeTextFieldTitle,
+  TextFieldWrap,
+  Wrapper,
+} from "./WriteStyles";
 import Btn from "../../common/btn/Btn";
 import { useNavigate } from "react-router-dom";
 import Layout from "../../../layout/Layout";
 import axios from "axios";
+import TextField from "../../common/textfield/TextField";
 
 const Write = () => {
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
+  const [file, setFile] = useState<File | null>(null);
 
   const navigation = useNavigate();
 
@@ -20,26 +28,31 @@ const Write = () => {
     setContent(event.target.value);
   };
 
+  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setFile(event.target.files && event.target.files[0]);
+  };
+
   const jwtToken = localStorage.getItem("jwtToken");
   const username = localStorage.getItem("username");
 
   const handleSubmit = async () => {
     try {
-      await axios.post(
-        `http://localhost:8080/board`,
-        {
-          title: title,
-          content: content,
+      const formData = new FormData();
+      formData.append("title", title);
+      formData.append("content", content);
+      if (file) {
+        formData.append("file", file);
+      }
+
+      await axios.post(`http://localhost:8080/board`, formData, {
+        headers: {
+          Authorization: `Bearer ${jwtToken}`,
+          "Content-Type": "multipart/form-data",
         },
-        {
-          headers: {
-            Authorization: `Bearer ${jwtToken}`,
-          },
-          params: {
-            username: username,
-          },
-        }
-      );
+        params: {
+          username: username,
+        },
+      });
       alert("게시물 작성 완료");
       navigation("/board");
     } catch (error) {
@@ -51,12 +64,29 @@ const Write = () => {
   return (
     <Layout>
       <Wrapper>
-        <Input1 placeholder="제목" value={title} onChange={handleTitleChange} />
-        <Input2
-          placeholder="내용"
-          value={content}
-          onChange={handleContentChange}
+        <TextField
+          title="제목"
+          type="text"
+          placeholder="제목"
+          value={title}
+          onChange={handleTitleChange}
         />
+        <TextFieldWrap>
+          <LargeTextFieldTitle>내용</LargeTextFieldTitle>
+          <LargeTextFieldInput
+            placeholder="내용"
+            value={content}
+            onChange={handleContentChange}
+          />
+        </TextFieldWrap>
+
+        <TextField
+          title="파일"
+          type="file"
+          placeholder="파일"
+          onChange={handleFileChange}
+        />
+
         <BtnWrapper>
           <Btn
             text="작성"

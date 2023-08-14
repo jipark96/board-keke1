@@ -32,6 +32,11 @@ interface Post {
     content: string;
     createdAt: string;
   }[];
+  fileList: {
+    fileId: number;
+    fileName: string;
+    filePath: string;
+  }[];
 }
 
 const Detail = () => {
@@ -66,6 +71,24 @@ const Detail = () => {
     }
   };
 
+  const downloadFile = async (fileId: number, fileName: string) => {
+    try {
+      const response = await axios.get(
+        `http://localhost:8080/file/download/${fileId}`,
+        { responseType: "blob" }
+      );
+      const url = window.URL.createObjectURL(new Blob([response.data]));
+      const link = document.createElement("a");
+      link.href = url;
+      link.setAttribute("download", fileName);
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+    } catch (error) {
+      console.error("Error downloading file:", error);
+    }
+  };
+
   return (
     <Layout>
       <BoardWrapper>
@@ -95,6 +118,20 @@ const Detail = () => {
               </TitleWrap>
             </BoardBody>
             <hr />
+            {post.fileList &&
+              post.fileList.map((file) => (
+                <div key={file.fileId}>
+                  <a
+                    href="#"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      downloadFile(file.fileId, file.fileName);
+                    }}
+                  >
+                    {file.fileName}
+                  </a>
+                </div>
+              ))}
             <Comment commentList={post.commentList} />
           </>
         )}

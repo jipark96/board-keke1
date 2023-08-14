@@ -36,3 +36,28 @@ export const BtnWrapper = styled.div`
   justify-content: flex-end;
   margin-top: 20px;
 `;
+
+export const TextFieldWrap = styled.div`
+  width: 600px;
+`;
+
+export const LargeTextFieldTitle = styled.p`
+  margin-bottom: 20px;
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 100%;
+`;
+
+export const LargeTextFieldInput = styled.textarea`
+  padding: 18px 0px 18px 18px;
+  width: calc(100% - 18px);
+  height: 200px;
+  border: 1px solid #171717;
+  font-weight: 500;
+  font-size: 12px;
+
+  &:focus {
+    outline: none;
+    border: 1px solid #36f;
+  }
+`;
