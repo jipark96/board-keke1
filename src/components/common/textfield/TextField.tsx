@@ -10,6 +10,7 @@ interface TextFieldProps {
   type: string;
   placeholder: string;
   value?: string;
+  multiple?: boolean;
   onChange: (value: any) => void;
 }
 

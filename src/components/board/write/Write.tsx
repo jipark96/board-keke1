@@ -15,7 +15,7 @@ import TextField from "../../common/textfield/TextField";
 const Write = () => {
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
-  const [file, setFile] = useState<File | null>(null);
+  const [files, setFiles] = useState<File[]>([]);
 
   const navigation = useNavigate();
 
@@ -29,7 +29,9 @@ const Write = () => {
   };
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setFile(event.target.files && event.target.files[0]);
+    if (event.target.files) {
+      setFiles(Array.from(event.target.files));
+    }
   };
 
   const jwtToken = localStorage.getItem("jwtToken");
@@ -40,9 +42,8 @@ const Write = () => {
       const formData = new FormData();
       formData.append("title", title);
       formData.append("content", content);
-      if (file) {
-        formData.append("file", file);
-      }
+
+      files.forEach((file) => formData.append("files", file));
 
       await axios.post(`http://localhost:8080/board`, formData, {
         headers: {
@@ -85,6 +86,7 @@ const Write = () => {
           type="file"
           placeholder="파일"
           onChange={handleFileChange}
+          multiple
         />
 
         <BtnWrapper>
