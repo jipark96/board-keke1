@@ -61,3 +61,9 @@ export const LargeTextFieldInput = styled.textarea`
     border: 1px solid #36f;
   }
 `;
+
+export const Remove = styled.span`
+  margin-left: 10px;
+  font-size: 16px;
+  cursor: pointer;
+`;

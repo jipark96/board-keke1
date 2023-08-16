@@ -3,6 +3,7 @@ import {
   BtnWrapper,
   LargeTextFieldInput,
   LargeTextFieldTitle,
+  Remove,
   TextFieldWrap,
   Wrapper,
 } from "./WriteStyles";
@@ -20,16 +21,19 @@ const Write = () => {
 
   const navigation = useNavigate();
 
+  //[제목]
   const handleTitleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setTitle(event.target.value);
   };
 
+  //[내용]
   const handleContentChange = (
     event: React.ChangeEvent<HTMLTextAreaElement>
   ) => {
     setContent(event.target.value);
   };
 
+  //[파일 첨부]
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.files) {
       const newFiles = Array.from(event.target.files);
@@ -40,9 +44,22 @@ const Write = () => {
       setFiles([...files, ...newFiles]);
     }
   };
+
+  //[파일 삭제]
+  const handleFileRemove = (index: number) => {
+    const updatedSelectedFiles = selectedFiles.filter(
+      (_file, idx) => idx !== index
+    );
+    const updatedFiles = files.filter((_file, idx) => idx !== index);
+
+    setSelectedFiles(updatedSelectedFiles);
+    setFiles(updatedFiles);
+  };
+
   const jwtToken = localStorage.getItem("jwtToken");
   const username = localStorage.getItem("username");
 
+  //[글 쓰기]
   const handleSubmit = async () => {
     try {
       const formData = new FormData();
@@ -96,7 +113,10 @@ const Write = () => {
         />
         <ul>
           {selectedFiles.map((fileName, index) => (
-            <li key={index}>{fileName}</li>
+            <li key={index}>
+              {fileName}
+              <Remove onClick={() => handleFileRemove(index)}> &times;</Remove>
+            </li>
           ))}
         </ul>
 
