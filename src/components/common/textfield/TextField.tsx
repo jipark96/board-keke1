@@ -19,11 +19,17 @@ const TextField = ({
   type,
   placeholder,
   value,
+  multiple,
   onChange,
 }: TextFieldProps) => (
   <TextFieldWrap>
     <TextFieldTitle>{title}</TextFieldTitle>
-    <TextFieldInput placeholder={placeholder} type={type} onChange={onChange} />
+    <TextFieldInput
+      placeholder={placeholder}
+      type={type}
+      onChange={onChange}
+      multiple={multiple}
+    />
   </TextFieldWrap>
 );
 

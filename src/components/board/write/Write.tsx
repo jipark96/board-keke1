@@ -16,12 +16,14 @@ const Write = () => {
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
   const [files, setFiles] = useState<File[]>([]);
+  const [selectedFiles, setSelectedFiles] = useState<string[]>([]);
 
   const navigation = useNavigate();
 
   const handleTitleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setTitle(event.target.value);
   };
+
   const handleContentChange = (
     event: React.ChangeEvent<HTMLTextAreaElement>
   ) => {
@@ -30,10 +32,14 @@ const Write = () => {
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.files) {
-      setFiles(Array.from(event.target.files));
+      const newFiles = Array.from(event.target.files);
+      setSelectedFiles([
+        ...selectedFiles,
+        ...newFiles.map((file) => file.name),
+      ]);
+      setFiles([...files, ...newFiles]);
     }
   };
-
   const jwtToken = localStorage.getItem("jwtToken");
   const username = localStorage.getItem("username");
 
@@ -88,6 +94,11 @@ const Write = () => {
           onChange={handleFileChange}
           multiple
         />
+        <ul>
+          {selectedFiles.map((fileName, index) => (
+            <li key={index}>{fileName}</li>
+          ))}
+        </ul>
 
         <BtnWrapper>
           <Btn
