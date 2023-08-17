@@ -42,3 +42,27 @@ export const ButtonWrap = styled.div`
   display: flex;
   justify-content: space-between;
 `;
+
+export const StyledComment = styled.div`
+  background-color: #f5f5f5;
+  padding: 12px;
+  border-radius: 8px;
+  margin: 16px 0;
+  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+`;
+
+export const StyledReplies = styled.div`
+  margin-left: 40px;
+  padding-left: 20px;
+`;
+
+export const StyledReply = styled(StyledComment)`
+  background-color: #f0f0f0;
+  box-shadow: none;
+  margin: 8px 0;
+`;
+
+export const StyledReplyInput = styled(Input)`
+  margin: 8px 0;
+  width: 100%;
+`;

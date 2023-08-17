@@ -31,6 +31,7 @@ interface Post {
     username: string;
     content: string;
     createdAt: string;
+    parentCommentId: number | null;
   }[];
   fileList: {
     fileId: number;
@@ -132,7 +133,12 @@ const Detail = () => {
                   </a>
                 </div>
               ))}
-            <Comment commentList={post.commentList} />
+            <Comment
+              commentList={post.commentList.map((comment) => ({
+                ...comment,
+                parentCommentId: null,
+              }))}
+            />
           </>
         )}
       </BoardWrapper>

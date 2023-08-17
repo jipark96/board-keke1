@@ -1,13 +1,16 @@
 import React, { useState } from "react";
 import {
   ButtonWrap,
-  Comment1,
   CommentContent,
   CommentDate,
   CommentDateWrap,
   CommentHeader,
   CommentUserName,
   Input,
+  StyledComment,
+  StyledReplies,
+  StyledReply,
+  StyledReplyInput,
 } from "./CommentStyles";
 
 import Btn from "../../../common/btn/Btn";
@@ -15,6 +18,7 @@ import axios from "axios";
 import { useParams } from "react-router-dom";
 import { formatDate } from "../../../../utils/Utils";
 import { Remove } from "../DetailStyles";
+import Reply from "./reply/Reply";
 
 interface CommentProps {
   commentList: {
@@ -24,7 +28,13 @@ interface CommentProps {
     username: string;
     content: string;
     createdAt: string;
+    parentCommentId: number | null;
   }[];
+}
+
+interface ReplyProps {
+  parentId: number | null;
+  content: string;
 }
 
 const Comment: React.FC<CommentProps> = ({ commentList }) => {
@@ -32,11 +42,56 @@ const Comment: React.FC<CommentProps> = ({ commentList }) => {
   const [commentInput, setCommentInput] = useState("");
   const [comments, setComments] = useState(commentList);
 
+  const [showReply, setShowReply] = useState<{ [key: number]: boolean }>({});
+
   const [editingCommentId, setEditingCommentId] = useState<number | null>(null); // 수정 중인 댓글의 ID
   const [editedContent, setEditedContent] = useState(""); // 수정 중인 댓글의 내용
 
   const jwtToken = localStorage.getItem("jwtToken");
   const username = localStorage.getItem("username");
+
+  //[대댓글 생성]
+  const [reply, setReply] = useState<ReplyProps>({
+    parentId: null as number | null,
+    content: "",
+  });
+
+  const handleReplyComment = (parentId: number) => {
+    setReply({ parentId: parentId, content: "" });
+  };
+
+  const handleSubmitReply = async () => {
+    if (!reply.parentId || !reply.content) {
+      return;
+    }
+    try {
+      const response = await axios.post(
+        `http://localhost:8080/board/${boardId}/comment/${reply.parentId}`,
+        {
+          boardId: boardId,
+          content: reply.content,
+          parentCommentId: reply.parentId,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${jwtToken}`,
+          },
+          params: {
+            username: username,
+          },
+        }
+      );
+      setComments([
+        ...comments,
+        {
+          ...response.data.result,
+        },
+      ]);
+      setReply({ parentId: null, content: "" });
+    } catch (error) {
+      console.error("Error adding reply:", error);
+    }
+  };
 
   //[댓글 생성]
   const handleSubmitComment = async () => {
@@ -119,6 +174,7 @@ const Comment: React.FC<CommentProps> = ({ commentList }) => {
       console.error("Error editing comment:", error);
     }
   };
+
   return (
     <>
       <CommentHeader>
@@ -129,8 +185,9 @@ const Comment: React.FC<CommentProps> = ({ commentList }) => {
         />
         <Btn text="등록" size="small" onClick={handleSubmitComment} />
       </CommentHeader>
+
       {comments.map((comment, index) => (
-        <Comment1 key={index}>
+        <StyledComment key={index}>
           <CommentDateWrap>
             <CommentDate>{formatDate(comment.createdAt)}</CommentDate>
           </CommentDateWrap>
@@ -162,9 +219,57 @@ const Comment: React.FC<CommentProps> = ({ commentList }) => {
               )}
             </>
           )}
+          {reply.parentId === comment.id && (
+            <>
+              <StyledReplyInput
+                placeholder="대댓글을 입력하세요."
+                value={reply.content}
+                onChange={(e) =>
+                  setReply({ ...reply, content: e.target.value })
+                }
+              />
+              <Btn text="등록" size="small" onClick={handleSubmitReply} />
 
+              {showReply[comment.id] && (
+                <StyledReplies>
+                  {comments
+                    .filter(
+                      (subComment) => subComment.parentCommentId === comment.id
+                    )
+                    .map((subComment) => (
+                      <Reply key={subComment.id} reply={subComment} />
+                    ))}
+                </StyledReplies>
+              )}
+            </>
+          )}
+          <ButtonWrap>
+            <Remove onClick={() => handleReplyComment(comment.id)}>
+              대댓글 작성
+            </Remove>
+            <Remove
+              onClick={() =>
+                setShowReply((prev) => ({
+                  ...prev,
+                  [comment.id]: !prev[comment.id],
+                }))
+              }
+            >
+              {showReply[comment.id]
+                ? `${
+                    comments.filter(
+                      (subComment) => subComment.parentCommentId === comment.id
+                    ).length
+                  }개의 대댓글 숨기기`
+                : `${
+                    comments.filter(
+                      (subComment) => subComment.parentCommentId === comment.id
+                    ).length
+                  }개의 대댓글 보기`}
+            </Remove>
+          </ButtonWrap>
           <hr />
-        </Comment1>
+        </StyledComment>
       ))}
     </>
   );
