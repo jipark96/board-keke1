@@ -41,6 +41,7 @@ export const CommentUserName = styled.div`
 export const ButtonWrap = styled.div`
   display: flex;
   justify-content: space-between;
+  margin-top: 8px;
 `;
 
 export const StyledComment = styled.div`
@@ -62,7 +63,8 @@ export const StyledReply = styled(StyledComment)`
   margin: 8px 0;
 `;
 
-export const StyledReplyInput = styled(Input)`
-  margin: 8px 0;
-  width: 100%;
+export const Remove = styled.div`
+  cursor: pointer;
+  font-size: 16px;
+  color: gray;
 `;

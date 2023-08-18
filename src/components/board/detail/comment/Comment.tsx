@@ -7,17 +7,15 @@ import {
   CommentHeader,
   CommentUserName,
   Input,
+  Remove,
   StyledComment,
   StyledReplies,
-  StyledReply,
-  StyledReplyInput,
 } from "./CommentStyles";
 
 import Btn from "../../../common/btn/Btn";
 import axios from "axios";
 import { useParams } from "react-router-dom";
 import { formatDate } from "../../../../utils/Utils";
-import { Remove } from "../DetailStyles";
 import Reply from "./reply/Reply";
 
 interface CommentProps {
@@ -81,10 +79,11 @@ const Comment: React.FC<CommentProps> = ({ commentList }) => {
           },
         }
       );
-      setComments([
-        ...comments,
+      setComments((prevComments) => [
+        ...prevComments,
         {
           ...response.data.result,
+          parentCommentId: reply.parentId,
         },
       ]);
       setReply({ parentId: null, content: "" });
@@ -144,7 +143,10 @@ const Comment: React.FC<CommentProps> = ({ commentList }) => {
   };
 
   //[댓글 수정]
-  const handleEditComment = async (commentId: number) => {
+  const handleEditComment = async (
+    commentId: number,
+    editedContent: string
+  ) => {
     try {
       await axios.patch(
         `http://localhost:8080/board/${boardId}/comment/${commentId}`,
@@ -186,91 +188,105 @@ const Comment: React.FC<CommentProps> = ({ commentList }) => {
         <Btn text="등록" size="small" onClick={handleSubmitComment} />
       </CommentHeader>
 
-      {comments.map((comment, index) => (
-        <StyledComment key={index}>
-          <CommentDateWrap>
-            <CommentDate>{formatDate(comment.createdAt)}</CommentDate>
-          </CommentDateWrap>
-          <CommentContent>{comment.content}</CommentContent>
-          <CommentUserName>{comment.username}</CommentUserName>
-          {editingCommentId === comment.id ? (
-            <CommentHeader>
-              <Input
-                value={editedContent}
-                onChange={(e) => setEditedContent(e.target.value)}
-              />
-              <Btn
-                text="수정"
-                size="small"
-                onClick={() => handleEditComment(comment.id)}
-              />
-            </CommentHeader>
-          ) : (
-            <>
-              {comment.username === username && (
-                <ButtonWrap>
-                  <Remove onClick={() => setEditingCommentId(comment.id)}>
-                    수정
-                  </Remove>
-                  <Remove onClick={() => handleDeleteComment(comment.id)}>
-                    삭제
-                  </Remove>
-                </ButtonWrap>
-              )}
-            </>
-          )}
-          {reply.parentId === comment.id && (
-            <>
-              <StyledReplyInput
-                placeholder="대댓글을 입력하세요."
-                value={reply.content}
-                onChange={(e) =>
-                  setReply({ ...reply, content: e.target.value })
-                }
-              />
-              <Btn text="등록" size="small" onClick={handleSubmitReply} />
+      {comments
+        .filter((comment) => comment.parentCommentId === null)
+        .map((comment, index) => (
+          <StyledComment key={index}>
+            <CommentDateWrap>
+              <CommentDate>{formatDate(comment.createdAt)}</CommentDate>
+            </CommentDateWrap>
+            <CommentContent>{comment.content}</CommentContent>
+            <CommentUserName>{comment.username}</CommentUserName>
 
-              {showReply[comment.id] && (
-                <StyledReplies>
-                  {comments
-                    .filter(
-                      (subComment) => subComment.parentCommentId === comment.id
-                    )
-                    .map((subComment) => (
-                      <Reply key={subComment.id} reply={subComment} />
-                    ))}
-                </StyledReplies>
-              )}
-            </>
-          )}
-          <ButtonWrap>
-            <Remove onClick={() => handleReplyComment(comment.id)}>
-              대댓글 작성
-            </Remove>
-            <Remove
-              onClick={() =>
-                setShowReply((prev) => ({
-                  ...prev,
-                  [comment.id]: !prev[comment.id],
-                }))
-              }
-            >
-              {showReply[comment.id]
-                ? `${
-                    comments.filter(
-                      (subComment) => subComment.parentCommentId === comment.id
-                    ).length
-                  }개의 대댓글 숨기기`
-                : `${
-                    comments.filter(
-                      (subComment) => subComment.parentCommentId === comment.id
-                    ).length
-                  }개의 대댓글 보기`}
-            </Remove>
-          </ButtonWrap>
-          <hr />
-        </StyledComment>
-      ))}
+            {editingCommentId === comment.id ? (
+              <CommentHeader>
+                <Input
+                  value={editedContent}
+                  onChange={(e) => setEditedContent(e.target.value)}
+                />
+                <Btn
+                  text="수정"
+                  size="small"
+                  onClick={() => handleEditComment(comment.id, editedContent)}
+                />
+              </CommentHeader>
+            ) : (
+              <>
+                {comment.username === username && (
+                  <ButtonWrap>
+                    <Remove onClick={() => setEditingCommentId(comment.id)}>
+                      수정
+                    </Remove>
+                    <Remove onClick={() => handleDeleteComment(comment.id)}>
+                      삭제
+                    </Remove>
+                  </ButtonWrap>
+                )}
+              </>
+            )}
+
+            {showReply[comment.id] && (
+              <StyledReplies>
+                {comments
+                  .filter(
+                    (subComment) => subComment.parentCommentId === comment.id
+                  )
+                  .map((subComment) => (
+                    <Reply
+                      key={`reply-${subComment.id}`}
+                      reply={subComment}
+                      handleDeleteComment={handleDeleteComment}
+                      handleEditComment={handleEditComment}
+                    />
+                  ))}
+              </StyledReplies>
+            )}
+
+            {reply.parentId === comment.id && (
+              <>
+                <CommentHeader>
+                  <Input
+                    placeholder="대댓글을 입력하세요."
+                    value={reply.content}
+                    onChange={(e) =>
+                      setReply({ ...reply, content: e.target.value })
+                    }
+                  />
+                  <Btn text="등록" size="small" onClick={handleSubmitReply} />
+                </CommentHeader>
+              </>
+            )}
+
+            <ButtonWrap>
+              <Remove onClick={() => handleReplyComment(comment.id)}>
+                대댓글 작성
+              </Remove>
+              <Remove
+                onClick={() =>
+                  setShowReply((prev) => ({
+                    ...prev,
+                    [comment.id]: !prev[comment.id],
+                  }))
+                }
+              >
+                {showReply[comment.id]
+                  ? `${
+                      comments.filter(
+                        (subComment) =>
+                          subComment.parentCommentId === comment.id
+                      ).length
+                    }개의 대댓글 숨기기`
+                  : `${
+                      comments.filter(
+                        (subComment) =>
+                          subComment.parentCommentId === comment.id
+                      ).length
+                    }개의 대댓글 보기`}
+              </Remove>
+            </ButtonWrap>
+            <hr />
+          </StyledComment>
+        ))}
     </>
   );
 };

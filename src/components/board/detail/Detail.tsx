@@ -61,6 +61,7 @@ const Detail = () => {
     fetchData();
   }, [boardId]);
 
+  //[게시물 삭제]
   const handleDelete = async () => {
     if (window.confirm("정말로 이 게시물을 삭제하시겠습니까?")) {
       try {
@@ -72,6 +73,7 @@ const Detail = () => {
     }
   };
 
+  //[파일 다운로드]
   const downloadFile = async (fileId: number, fileName: string) => {
     try {
       const response = await axios.get(
@@ -133,12 +135,7 @@ const Detail = () => {
                   </a>
                 </div>
               ))}
-            <Comment
-              commentList={post.commentList.map((comment) => ({
-                ...comment,
-                parentCommentId: null,
-              }))}
-            />
+            <Comment commentList={post.commentList} />
           </>
         )}
       </BoardWrapper>
