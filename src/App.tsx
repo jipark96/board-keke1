@@ -7,6 +7,7 @@ import WritePage from "./pages/board/write/Write";
 import EditPage from "./pages/board/edit/Edit";
 import DetailPage from "./pages/board/detail/Detail";
 import MyPagePage from "./pages/mypage/MyPage";
+import EditMyPage from "./pages/mypage/edit/Edit";
 
 const loading = <div>화면을 불러오는 중 입니다.</div>;
 
@@ -28,6 +29,7 @@ const App: React.FunctionComponent = () => {
           <Route path="/board/edit/:boardId" element={<EditPage />} />
           <Route path="/board/:boardId" element={<DetailPage />} />
           <Route path="/mypage/:userId" element={<MyPagePage />} />
+          <Route path="/mypage/edit/:userId" element={<EditMyPage />} />
           <Route path="/404" element={<Page404 />} />
           <Route path="/500" element={<Page500 />} />
         </Routes>

@@ -44,8 +44,10 @@ const Login = () => {
       const jwtToken = response.data.result.jwtToken;
       const name = response.data.result.name;
       const userId = response.data.result.id;
+      const email = response.data.result.email;
       localStorage.setItem("jwtToken", jwtToken);
       localStorage.setItem("name", name);
+      localStorage.setItem("email", email);
       localStorage.setItem("username", username);
       localStorage.setItem("userId", userId);
       navigate("/board");

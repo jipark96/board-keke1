@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Box, Edit, Info, Remove, Section, Title } from "./MyPageStyles";
 import Layout from "../../layout/Layout";
-import { useNavigate, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 
 interface MyPageProps {
@@ -59,7 +59,9 @@ const MyPage = () => {
         <Info>username : {userInfo?.username}</Info>
         <Info>email : {userInfo?.email}</Info>
         <Box>
-          <Edit>수정</Edit>
+          <Link to={`/mypage/edit/${userId}`}>
+            <Edit>수정</Edit>
+          </Link>
           <Remove onClick={handleDelete}>회원 탈퇴</Remove>
         </Box>
       </Section>
