@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { HeaderMenu, HeaderTitle, HeaderWrapper } from "./HeaderStyles";
 
 const Header = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [name, setName] = useState("");
+  const [userId, setUserId] = useState("");
   const navigation = useNavigate();
 
   const handleBoard = () => {
@@ -22,14 +23,20 @@ const Header = () => {
     navigation("/join");
   };
 
+  const handleMyPage = () => {
+    navigation(`/mypage/${userId}`);
+  };
+
   useEffect(() => {
     const jwtToken = localStorage.getItem("jwtToken");
     const name = localStorage.getItem("name");
     const username = localStorage.getItem("username");
+    const userId = localStorage.getItem("userId");
 
-    if (jwtToken && name && username) {
+    if (jwtToken && name && username && userId) {
       setIsLoggedIn(true);
       setName(name);
+      setUserId(userId);
     } else {
       setIsLoggedIn(false);
       setName("");
@@ -40,6 +47,7 @@ const Header = () => {
     localStorage.removeItem("jwtToken");
     localStorage.removeItem("name");
     localStorage.removeItem("username");
+    localStorage.removeItem("userId");
     setIsLoggedIn(false);
 
     window.dispatchEvent(new Event("logout"));
@@ -55,6 +63,7 @@ const Header = () => {
         {isLoggedIn ? (
           <>
             <span>{name}</span>
+            <span onClick={handleMyPage}>내정보</span>
             <span onClick={handleLogout}>로그아웃</span>
           </>
         ) : (
