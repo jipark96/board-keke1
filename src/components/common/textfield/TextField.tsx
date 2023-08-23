@@ -10,7 +10,7 @@ interface TextFieldProps {
   type: string;
   placeholder: string;
   value?: string;
-  multiple?: boolean;
+  multiple?: boolean; //여러 줄 입력을 지원
   onChange: (value: any) => void;
 }
 

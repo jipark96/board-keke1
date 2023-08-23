@@ -78,15 +78,19 @@ const Detail = () => {
     try {
       const response = await axios.get(
         `http://localhost:8080/file/download/${fileId}`,
-        { responseType: "blob" }
+        { responseType: "blob" } // 서버에서 바이너리 데이터인 파일을 받기 위해 responseType을 blob으로 설정
       );
+
+      // 서버로부터 받은 바이너리 데이터를 가지고 URL 생성
       const url = window.URL.createObjectURL(new Blob([response.data]));
+
+      // <a> 요소를 생성하여 파일 다운로드 링크 만들기
       const link = document.createElement("a");
       link.href = url;
-      link.setAttribute("download", fileName);
-      document.body.appendChild(link);
-      link.click();
-      link.remove();
+      link.setAttribute("download", fileName); // 파일 이름 설정
+      document.body.appendChild(link); // <a> 요소를 문서(body)에 추가
+      link.click(); // 링크 클릭하여 파일 다운로드 실행
+      link.remove(); // 링크 요소를 제거하여 문서에서 제거
     } catch (error) {
       console.error("Error downloading file:", error);
     }

@@ -41,19 +41,26 @@ const Edit = () => {
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.files) {
       const newFiles = Array.from(event.target.files);
+
+      // 선택한 파일들의 이름을 selectedFiles 상태에 추가
       setSelectedFiles([
         ...selectedFiles,
         ...newFiles.map((file) => file.name),
       ]);
+
+      // 선택한 파일들을 files 상태에 추가
       setFiles([...files, ...newFiles]);
     }
   };
 
   //[파일 삭제]
   const handleFileRemove = (index: number) => {
+    // 선택한 파일 상태에서 해당 인덱스의 파일 이름을 제외한 나머지 파일들을 선택
     const updatedSelectedFiles = selectedFiles.filter(
       (_file, idx) => idx !== index
     );
+
+    // 선택한 파일 상태에서 해당 인덱스의 파일을 제외한 나머지 파일들을 선택
     const updatedFiles = files.filter((_file, idx) => idx !== index);
 
     setSelectedFiles(updatedSelectedFiles);
@@ -62,8 +69,10 @@ const Edit = () => {
 
   //[기존 파일 삭제]
   const handleOriginFileRemove = (index: number) => {
+    // 삭제할 파일의 이름을 removedFile로 가져옴
     const removedFile = originFiles[index];
 
+    // 기존 파일들 중에서 해당 인덱스의 파일을 제외한 나머지 파일들을 선택
     const updatedOriginFiles = [...originFiles];
     updatedOriginFiles.splice(index, 1);
     setOriginFiles(updatedOriginFiles);

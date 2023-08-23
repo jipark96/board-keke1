@@ -26,6 +26,8 @@ const MyPage = () => {
             "X-ACCESS-TOKEN": jwtToken,
           },
         });
+
+        // [회원 탈퇴 후 로컬 스토리지에서 관련 정보 제거]
         localStorage.removeItem("jwtToken");
         localStorage.removeItem("name");
         localStorage.removeItem("username");
@@ -37,6 +39,8 @@ const MyPage = () => {
       }
     }
   };
+
+  // [유저 정보 가져오기]
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -54,9 +58,9 @@ const MyPage = () => {
   return (
     <Layout>
       <Section>
-        <Title>MyPage</Title>
-        <Info>name : {userInfo?.name}</Info>
-        <Info>username : {userInfo?.username}</Info>
+        <Title>프로필</Title>
+        <Info>이름 : {userInfo?.name}</Info>
+        <Info>아이디 : {userInfo?.username}</Info>
         <Info>email : {userInfo?.email}</Info>
         <Box>
           <Link to={`/mypage/edit/${userId}`}>

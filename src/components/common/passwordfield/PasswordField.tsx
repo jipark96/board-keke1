@@ -11,8 +11,8 @@ interface PasswordFieldProps {
   type: string;
   placeholder: string;
   required?: string;
-  onValueChange?: (value: string) => void;
-  onValidityChange?: (validity: boolean) => void;
+  onValueChange?: (value: string) => void; //비밀번호 값이 변경될 때 호출되는 콜백 함수
+  onValidityChange?: (validity: boolean) => void; // 비밀번호 유효성 상태가 변경될 때 호출되는 콜백 함수
   isPasswordMatch?: boolean;
 }
 
@@ -33,6 +33,7 @@ const PasswordField = ({
     return regex.test(password);
   };
 
+  //[비밀번호 변경될 때 호출]
   const handlePasswordChange = (event: ChangeEvent<HTMLInputElement>) => {
     const password = event.currentTarget.value;
     const validity = isValidPassword(password);

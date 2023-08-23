@@ -29,6 +29,7 @@ const initialState: FormState = {
 const Join = () => {
   const navigation = useNavigate();
 
+  // [회원 가입 데이터를 서버로 전송]
   const joinSubmit = async () => {
     const { username, name, email, password, passwordCheck } = joinData;
     const dataToSend = {
@@ -57,21 +58,21 @@ const Join = () => {
     }
   };
 
-  //[redux 변수]
+  //[redux 변수, 회원 가입 데이터 가져오기]
   const dispatch = useDispatch();
   const joinData = useSelector((state: any) => state.join);
 
   //[폼 객체]
   const [form, setForm] = useState<FormState>(initialState);
 
-  //[리액트 훅 폼]
-  const {
-    register,
-    handleSubmit,
-    watch,
-    reset,
-    formState: { errors },
-  } = useForm();
+  // //[리액트 훅 폼]
+  // const {
+  //   register,
+  //   handleSubmit,
+  //   watch,
+  //   reset,
+  //   formState: { errors },
+  // } = useForm();
 
   //[아이디 가져오기]
   const handleUserNameChange = (e: any) => {

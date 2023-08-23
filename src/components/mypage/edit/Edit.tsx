@@ -44,14 +44,14 @@ const Edit = () => {
         const response = await axios.get(
           `http://localhost:8080/user/${userId}`
         );
-        console.log(response.data);
+
         setEmail(response.data.result.email);
         setName(response.data.result.name);
       } catch (error) {
         console.error("Error : ", error);
       }
     };
-    fetchUserInfo();
+    fetchUserInfo(); // 컴포넌트가 마운트되었을 때 유저 정보 불러옴
   }, [userId]);
 
   //[수정하기]

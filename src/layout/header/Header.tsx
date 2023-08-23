@@ -51,7 +51,7 @@ const Header = () => {
     setIsLoggedIn(false);
 
     window.dispatchEvent(new Event("logout"));
-    navigation("#");
+    navigation("/");
   };
 
   return (
