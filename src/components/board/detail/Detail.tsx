@@ -51,8 +51,10 @@ const Detail = () => {
     const fetchData = async () => {
       try {
         const response = await axios.get(
-          `http://localhost:8080/board/${boardId}`
+          `http://localhost:8080/board/${boardId}`,
+          { withCredentials: true }
         );
+
         setPost(response.data.result);
       } catch (error) {
         console.error("Error fetching post:", error);
@@ -65,7 +67,9 @@ const Detail = () => {
   const handleDelete = async () => {
     if (window.confirm("정말로 이 게시물을 삭제하시겠습니까?")) {
       try {
-        await axios.delete(`http://localhost:8080/board/${boardId}`);
+        await axios.delete(`http://localhost:8080/board/${boardId}`, {
+          withCredentials: true,
+        });
         navigation("/board");
       } catch (error) {
         console.error("Error deleting post:", error);
@@ -78,7 +82,10 @@ const Detail = () => {
     try {
       const response = await axios.get(
         `http://localhost:8080/file/download/${fileId}`,
-        { responseType: "blob" } // 서버에서 바이너리 데이터인 파일을 받기 위해 responseType을 blob으로 설정
+        {
+          responseType: "blob", // 서버에서 바이너리 데이터인 파일을 받기 위해 responseType을 blob으로 설정
+          withCredentials: true,
+        }
       );
 
       // 서버로부터 받은 바이너리 데이터를 가지고 URL 생성
