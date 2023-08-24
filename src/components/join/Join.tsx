@@ -65,34 +65,25 @@ const Join = () => {
   //[폼 객체]
   const [form, setForm] = useState<FormState>(initialState);
 
-  // //[리액트 훅 폼]
-  // const {
-  //   register,
-  //   handleSubmit,
-  //   watch,
-  //   reset,
-  //   formState: { errors },
-  // } = useForm();
-
-  //[아이디 가져오기]
+  //[아이디 변경 핸들러]
   const handleUserNameChange = (e: any) => {
     setForm((prevForm) => ({ ...prevForm, username: e.target.value }));
     dispatch(setJoinData({ username: e.target.value }));
   };
 
-  //[이메일 가져오기]
+  //[이메일 변경 핸들러]
   const handleEmailChange = (e: any) => {
     const value = e.target.value;
     setForm((prevForm) => ({ ...prevForm, email: value }));
     dispatch(setJoinData({ email: value }));
   };
-  //[이름 가져오기]
+  //[이름 변경 핸들러]
   const handleNameChange = (e: any) => {
     setForm((prevForm) => ({ ...prevForm, name: e.target.value }));
     dispatch(setJoinData({ name: e.target.value }));
   };
 
-  //[비밀번호 매치]
+  //[비밀번호 일치 여부, 유효성 상태 변경 핸들러]
   const [isPasswordMismatched, setPasswordMismatched] = useState(false);
   const [isPasswordValid, setIsPasswordValid] = useState(false);
 
@@ -128,6 +119,7 @@ const Join = () => {
       isPasswordValid
     );
   };
+
   //[회원 가입]
   const onSubmit = () => {
     joinSubmit();

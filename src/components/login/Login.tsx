@@ -22,18 +22,21 @@ const Login = () => {
     setModal(false);
   };
 
+  //[아이디 변경 핸들러]
   const handleUsernameChange = (
     event: React.ChangeEvent<HTMLInputElement>
   ): void => {
     setUsername(event.currentTarget.value);
   };
 
+  //[비밀번호 변경 핸들러]
   const handlePasswordChange = (
     event: React.ChangeEvent<HTMLInputElement>
   ): void => {
     setPassword(event.currentTarget.value);
   };
 
+  //[로그인 처리]
   const handleLogin = async () => {
     try {
       const response = await axios.post("http://localhost:8080/user/login", {
@@ -41,15 +44,19 @@ const Login = () => {
         password,
       });
 
+      //[서버 응답에서 정보 추출]
       const jwtToken = response.data.result.jwtToken;
       const name = response.data.result.name;
       const userId = response.data.result.id;
       const email = response.data.result.email;
+
+      //[로컬 스토리지에 저장]
       localStorage.setItem("jwtToken", jwtToken);
       localStorage.setItem("name", name);
       localStorage.setItem("email", email);
       localStorage.setItem("username", username);
       localStorage.setItem("userId", userId);
+
       navigate("/board");
       console.log(response);
     } catch (error) {

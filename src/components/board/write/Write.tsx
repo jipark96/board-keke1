@@ -36,21 +36,21 @@ const Write = () => {
   //[파일 첨부]
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.files) {
-      const newFiles = Array.from(event.target.files);
+      const newFiles = Array.from(event.target.files); //배열로 변환
       setSelectedFiles([
         ...selectedFiles,
         ...newFiles.map((file) => file.name),
       ]);
-      setFiles([...files, ...newFiles]);
+      setFiles([...files, ...newFiles]); // 기존 파일 목록에 새로운 파일들 추가
     }
   };
 
   //[파일 삭제]
   const handleFileRemove = (index: number) => {
     const updatedSelectedFiles = selectedFiles.filter(
-      (_file, idx) => idx !== index
+      (_file, idx) => idx !== index // 선택된 파일 목록에서 해당 인덱스 제외
     );
-    const updatedFiles = files.filter((_file, idx) => idx !== index);
+    const updatedFiles = files.filter((_file, idx) => idx !== index); // 파일 목록에서 해당 인덱스 제외
 
     setSelectedFiles(updatedSelectedFiles);
     setFiles(updatedFiles);

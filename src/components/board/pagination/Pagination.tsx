@@ -25,7 +25,7 @@ const Pagination = ({
           (page) => (
             <PageNumber
               key={page}
-              active={page === currentPage}
+              active={page === currentPage} // 현재 페이지와 일치하면 활성화된 스타일 적용
               onClick={() => onPageChange(page)}
             >
               {page}

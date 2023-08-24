@@ -59,6 +59,7 @@ const Comment: React.FC<CommentProps> = ({ commentList }) => {
   };
 
   const handleSubmitReply = async () => {
+    // parentId와 내용이 비어있다면 아무 작업도 수행하지 않음
     if (!reply.parentId || !reply.content) {
       return;
     }
@@ -79,6 +80,8 @@ const Comment: React.FC<CommentProps> = ({ commentList }) => {
           },
         }
       );
+
+      // 상태에 새로운 대댓글을 추가하고 입력 상태를 초기화
       setComments((prevComments) => [
         ...prevComments,
         {

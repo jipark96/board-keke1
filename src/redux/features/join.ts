@@ -7,6 +7,7 @@ interface JoinState {
   password: string;
 }
 
+//[초기상태]
 const initialState: JoinState = {
   username: "",
   name: "",
@@ -14,6 +15,7 @@ const initialState: JoinState = {
   password: "",
 };
 
+//[업데이트 역할]
 const JoinSlice = createSlice({
   name: "JoinState",
   initialState,
