@@ -3,17 +3,25 @@ import { Box, Edit, Info, Remove, Section, Title } from "./MyPageStyles";
 import Layout from "../../layout/Layout";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
+import { User } from "../../types/user.data";
 
-interface MyPageProps {
-  id: number;
-  name: string;
-  username: string;
-  email: string;
-}
+// interface MyPageProps {
+//   id: number;
+//   name: string;
+//   username: string;
+//   email: string;
+// }
+
+const MyPageProps = {
+  id: 0,
+  name: "",
+  username: "",
+  email: "",
+};
 
 const MyPage = () => {
   const { userId } = useParams<{ userId: string }>();
-  const [userInfo, setUserInfo] = useState<MyPageProps | null>(null);
+  const [userInfo, setUserInfo] = useState<User>(MyPageProps);
   const navigation = useNavigate();
   const jwtToken = localStorage.getItem("jwtToken");
 
