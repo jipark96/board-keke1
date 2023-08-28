@@ -13,36 +13,14 @@ import {
 import Btn from "../../common/btn/Btn";
 import Comment from "./comment/Comment";
 import Layout from "../../../layout/Layout";
-import axios from "axios";
 import { useNavigate, useParams } from "react-router-dom";
 import { formatDate } from "../../../utils/Utils";
-
-interface Post {
-  id: number;
-  title: string;
-  content: string;
-  username: string;
-  createdAt: string;
-  view: number;
-  commentList: {
-    id: number;
-    boardId: number;
-    userId: number;
-    username: string;
-    content: string;
-    createdAt: string;
-    parentCommentId: number | null;
-  }[];
-  fileList: {
-    fileId: number;
-    fileName: string;
-    filePath: string;
-  }[];
-}
+import { BoardDetailData } from "../../../types/board.data";
+import { deleteBoard, getBoard, getFile } from "../../../api/boardApi";
 
 const Detail = () => {
   const { boardId } = useParams<{ boardId: string }>();
-  const [post, setPost] = useState<Post | null>(null);
+  const [post, setPost] = useState<BoardDetailData | null>(null);
   const navigation = useNavigate();
 
   const username = localStorage.getItem("username");
@@ -50,12 +28,11 @@ const Detail = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get(
-          `http://localhost:8080/board/${boardId}`,
-          { withCredentials: true }
-        );
-
-        setPost(response.data.result);
+        if (boardId) {
+          // boardId가 존재하는지 확인
+          const result = await getBoard(boardId);
+          setPost(result);
+        }
       } catch (error) {
         console.error("Error fetching post:", error);
       }
@@ -67,10 +44,10 @@ const Detail = () => {
   const handleDelete = async () => {
     if (window.confirm("정말로 이 게시물을 삭제하시겠습니까?")) {
       try {
-        await axios.delete(`http://localhost:8080/board/${boardId}`, {
-          withCredentials: true,
-        });
-        navigation("/board");
+        if (boardId) {
+          await deleteBoard(boardId);
+          navigation("/board");
+        }
       } catch (error) {
         console.error("Error deleting post:", error);
       }
@@ -80,16 +57,10 @@ const Detail = () => {
   //[파일 다운로드]
   const downloadFile = async (fileId: number, fileName: string) => {
     try {
-      const response = await axios.get(
-        `http://localhost:8080/file/download/${fileId}`,
-        {
-          responseType: "blob", // 서버에서 바이너리 데이터인 파일을 받기 위해 responseType을 blob으로 설정
-          withCredentials: true,
-        }
-      );
+      const result = await getFile(fileId);
 
       // 서버로부터 받은 바이너리 데이터를 가지고 URL 생성
-      const url = window.URL.createObjectURL(new Blob([response.data]));
+      const url = window.URL.createObjectURL(new Blob([result]));
 
       // <a> 요소를 생성하여 파일 다운로드 링크 만들기
       const link = document.createElement("a");

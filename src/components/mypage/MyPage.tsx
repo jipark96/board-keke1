@@ -4,13 +4,7 @@ import Layout from "../../layout/Layout";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 import { User } from "../../types/user.data";
-
-// interface MyPageProps {
-//   id: number;
-//   name: string;
-//   username: string;
-//   email: string;
-// }
+import { getUser } from "../../api/userApi";
 
 const MyPageProps = {
   id: 0,
@@ -52,10 +46,10 @@ const MyPage = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get(
-          `http://localhost:8080/user/${userId}`
-        );
-        setUserInfo(response.data.result);
+        if (userId) {
+          const result = await getUser(userId);
+          setUserInfo(result);
+        }
       } catch (error) {
         console.error("Error : ", error);
       }

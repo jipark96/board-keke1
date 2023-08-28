@@ -6,6 +6,7 @@ import Btn from "../common/btn/Btn";
 import Layout from "../../layout/Layout";
 import axios from "axios";
 import Modal from "./modal/Modal";
+import { postLogin } from "../../api/userApi";
 
 const Login = () => {
   const navigate = useNavigate();
@@ -39,16 +40,13 @@ const Login = () => {
   //[로그인 처리]
   const handleLogin = async () => {
     try {
-      const response = await axios.post("http://localhost:8080/user/login", {
-        username,
-        password,
-      });
+      const result = await postLogin(username, password);
 
       //[서버 응답에서 정보 추출]
-      const jwtToken = response.data.result.jwtToken;
-      const name = response.data.result.name;
-      const userId = response.data.result.id;
-      const email = response.data.result.email;
+      const jwtToken = result.jwtToken;
+      const name = result.name;
+      const userId = result.id;
+      const email = result.email;
 
       //[로컬 스토리지에 저장]
       localStorage.setItem("jwtToken", jwtToken);
@@ -58,7 +56,6 @@ const Login = () => {
       localStorage.setItem("userId", userId);
 
       navigate("/board");
-      console.log(response);
     } catch (error) {
       console.log("실패하였습니다", error);
       showModal();

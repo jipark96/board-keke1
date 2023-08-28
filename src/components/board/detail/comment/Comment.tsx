@@ -17,25 +17,20 @@ import axios from "axios";
 import { useParams } from "react-router-dom";
 import { formatDate } from "../../../../utils/Utils";
 import Reply from "./reply/Reply";
-
-interface CommentProps {
-  commentList: {
-    id: number;
-    boardId: number;
-    userId: number;
-    username: string;
-    content: string;
-    createdAt: string;
-    parentCommentId: number | null;
-  }[];
-}
+import { CommentData } from "../../../../types/board.data";
+import {
+  createComment,
+  createReply,
+  deleteComment,
+  patchComment,
+} from "../../../../api/commentApi";
 
 interface ReplyProps {
   parentId: number | null;
   content: string;
 }
 
-const Comment: React.FC<CommentProps> = ({ commentList }) => {
+const Comment: React.FC<CommentData> = ({ commentList }) => {
   const { boardId } = useParams<{ boardId: string }>();
   const [commentInput, setCommentInput] = useState("");
   const [comments, setComments] = useState(commentList);
@@ -45,7 +40,6 @@ const Comment: React.FC<CommentProps> = ({ commentList }) => {
   const [editingCommentId, setEditingCommentId] = useState<number | null>(null); // 수정 중인 댓글의 ID
   const [editedContent, setEditedContent] = useState(""); // 수정 중인 댓글의 내용
 
-  const jwtToken = localStorage.getItem("jwtToken");
   const username = localStorage.getItem("username");
 
   //[대댓글 생성]
@@ -64,32 +58,23 @@ const Comment: React.FC<CommentProps> = ({ commentList }) => {
       return;
     }
     try {
-      const response = await axios.post(
-        `http://localhost:8080/board/${boardId}/comment/${reply.parentId}`,
-        {
-          boardId: boardId,
-          content: reply.content,
-          parentCommentId: reply.parentId,
-        },
-        {
-          headers: {
-            Authorization: `Bearer ${jwtToken}`,
-          },
-          params: {
-            username: username,
-          },
-        }
-      );
+      if (boardId) {
+        const result = await createReply(
+          boardId,
+          reply.content,
+          reply.parentId
+        );
 
-      // 상태에 새로운 대댓글을 추가하고 입력 상태를 초기화
-      setComments((prevComments) => [
-        ...prevComments,
-        {
-          ...response.data.result,
-          parentCommentId: reply.parentId,
-        },
-      ]);
-      setReply({ parentId: null, content: "" });
+        // 상태에 새로운 대댓글을 추가하고 입력 상태를 초기화
+        setComments((prevComments) => [
+          ...prevComments,
+          {
+            ...result,
+            parentCommentId: reply.parentId,
+          },
+        ]);
+        setReply({ parentId: null, content: "" });
+      }
     } catch (error) {
       console.error("Error adding reply:", error);
     }
@@ -98,29 +83,17 @@ const Comment: React.FC<CommentProps> = ({ commentList }) => {
   //[댓글 생성]
   const handleSubmitComment = async () => {
     try {
-      const response = await axios.post(
-        `http://localhost:8080/board/${boardId}/comment`,
-        {
-          boardId: boardId,
-          content: commentInput,
-        },
-        {
-          headers: {
-            Authorization: `Bearer ${jwtToken}`,
+      if (boardId) {
+        const result = await createComment(boardId, commentInput);
+        setComments([
+          ...comments,
+          {
+            ...result,
           },
-          params: {
-            username: username,
-          },
-        }
-      );
-      setComments([
-        ...comments,
-        {
-          ...response.data.result,
-        },
-      ]);
+        ]);
 
-      setCommentInput("");
+        setCommentInput("");
+      }
     } catch (error) {
       console.error("Error adding comment:", error);
     }
@@ -129,17 +102,12 @@ const Comment: React.FC<CommentProps> = ({ commentList }) => {
   //[댓글 삭제]
   const handleDeleteComment = async (commentId: number) => {
     try {
-      await axios.delete(
-        `http://localhost:8080/board/${boardId}/comment/${commentId}`,
-        {
-          headers: {
-            Authorization: `Bearer ${jwtToken}`,
-          },
-        }
-      );
+      if (boardId) {
+        await deleteComment(boardId, commentId);
 
-      // 삭제된 댓글을 상태에서 제거
-      setComments(comments.filter((comment) => comment.id !== commentId));
+        // 삭제된 댓글을 상태에서 제거
+        setComments(comments.filter((comment) => comment.id !== commentId));
+      }
     } catch (error) {
       console.error("Error deleting comment:", error);
     }
@@ -151,30 +119,22 @@ const Comment: React.FC<CommentProps> = ({ commentList }) => {
     editedContent: string
   ) => {
     try {
-      await axios.patch(
-        `http://localhost:8080/board/${boardId}/comment/${commentId}`,
-        {
-          content: editedContent,
-        },
-        {
-          headers: {
-            Authorization: `Bearer ${jwtToken}`,
-          },
-        }
-      );
+      if (boardId) {
+        await patchComment(boardId, commentId, editedContent);
 
-      // 수정된 댓글 내용 업데이트
-      setComments((prevComments) =>
-        prevComments.map((comment) =>
-          comment.id === commentId
-            ? { ...comment, content: editedContent }
-            : comment
-        )
-      );
+        // 수정된 댓글 내용 업데이트
+        setComments((prevComments) =>
+          prevComments.map((comment) =>
+            comment.id === commentId
+              ? { ...comment, content: editedContent }
+              : comment
+          )
+        );
 
-      // 수정 모드 종료
-      setEditingCommentId(null);
-      setEditedContent("");
+        // 수정 모드 종료
+        setEditingCommentId(null);
+        setEditedContent("");
+      }
     } catch (error) {
       console.error("Error editing comment:", error);
     }

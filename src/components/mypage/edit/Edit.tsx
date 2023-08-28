@@ -10,9 +10,10 @@ import {
   TextFieldInput,
   TextFieldWrap,
 } from "./EditStyles";
-import TextField from "../../common/textfield/TextField";
+
 import PasswordField from "../../common/passwordfield/PasswordField";
 import Btn from "../../common/btn/Btn";
+import { getUser } from "../../../api/userApi";
 
 const Edit = () => {
   const { userId } = useParams();
@@ -41,12 +42,12 @@ const Edit = () => {
   useEffect(() => {
     const fetchUserInfo = async () => {
       try {
-        const response = await axios.get(
-          `http://localhost:8080/user/${userId}`
-        );
+        if (userId) {
+          const result = await getUser(userId);
 
-        setEmail(response.data.result.email);
-        setName(response.data.result.name);
+          setEmail(result.email);
+          setName(result.name);
+        }
       } catch (error) {
         console.error("Error : ", error);
       }

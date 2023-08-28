@@ -13,6 +13,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import Layout from "../../../layout/Layout";
 import axios from "axios";
 import TextField from "../../common/textfield/TextField";
+import { getBoard, patchBoard } from "../../../api/boardApi";
 
 const Edit = () => {
   const { boardId } = useParams();
@@ -83,15 +84,19 @@ const Edit = () => {
   //[기존 글 가져오기]
   useEffect(() => {
     const fetchPost = async () => {
-      const response = await axios.get(
-        `http://localhost:8080/board/${boardId}`
-      );
-      setTitle(response.data.result.title);
-      setContent(response.data.result.content);
-      if (response.data.result.fileList) {
-        setOriginFiles(
-          response.data.result.fileList.map((file: any) => file.fileName)
-        );
+      try {
+        if (boardId) {
+          const result = await getBoard(boardId);
+
+          setTitle(result.title);
+          setContent(result.content);
+
+          if (result.fileList) {
+            setOriginFiles(result.fileList.map((file: any) => file.fileName));
+          }
+        }
+      } catch (error) {
+        console.error("Error fetching post:", error);
       }
     };
 
@@ -101,28 +106,10 @@ const Edit = () => {
   //[수정 하기]
   const handlePatchClick = async () => {
     try {
-      const formData = new FormData();
-      formData.append("title", title);
-      formData.append("content", content);
-
-      // 새로운 첨부파일과 지워야 할 첨부파일 목록 전송
-      files.forEach((file) => formData.append("files", file));
-
-      // 서버에게 지워야 할 첨부파일 목록 전송(배열 -> 문자열 변환)
-      if (removedOriginFiles.length > 0) {
-        let deleted_list = JSON.stringify(removedOriginFiles);
-        formData.append("deleted", deleted_list);
+      if (boardId) {
+        await patchBoard(boardId, title, content, files, removedOriginFiles);
       }
 
-      await axios.patch(
-        `http://localhost:8080/board/edit/${boardId}`,
-        formData,
-        {
-          headers: {
-            "Content-Type": "multipart/form-data",
-          },
-        }
-      );
       navigation("/board");
     } catch (error) {
       console.error(error);

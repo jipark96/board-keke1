@@ -5,3 +5,48 @@ export interface BoardListData {
   createdAt: string;
   view: number;
 }
+
+export interface BoardDetailData {
+  id: number;
+  title: string;
+  content: string;
+  username: string;
+  createdAt: string;
+  view: number;
+  commentList: {
+    id: number;
+    boardId: number;
+    userId: number;
+    username: string;
+    content: string;
+    createdAt: string;
+    parentCommentId: number | null;
+  }[];
+  fileList: {
+    fileId: number;
+    fileName: string;
+    filePath: string;
+  }[];
+}
+
+export interface CommentData {
+  commentList: {
+    id: number;
+    boardId: number;
+    userId: number;
+    username: string;
+    content: string;
+    createdAt: string;
+    parentCommentId: number | null;
+  }[];
+}
+
+export interface ReplyData {
+  reply: {
+    id: number;
+    userId: number;
+    username: string;
+    content: string;
+    createdAt: string;
+  };
+}

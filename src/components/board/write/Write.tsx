@@ -10,8 +10,8 @@ import {
 import Btn from "../../common/btn/Btn";
 import { useNavigate } from "react-router-dom";
 import Layout from "../../../layout/Layout";
-import axios from "axios";
 import TextField from "../../common/textfield/TextField";
+import { createBoard } from "../../../api/boardApi";
 
 const Write = () => {
   const [title, setTitle] = useState("");
@@ -56,31 +56,14 @@ const Write = () => {
     setFiles(updatedFiles);
   };
 
-  const jwtToken = localStorage.getItem("jwtToken");
-  const username = localStorage.getItem("username");
-
   //[글 쓰기]
   const handleSubmit = async () => {
     try {
-      const formData = new FormData();
-      formData.append("title", title);
-      formData.append("content", content);
-
-      files.forEach((file) => formData.append("files", file));
-
-      await axios.post(`http://localhost:8080/board`, formData, {
-        headers: {
-          Authorization: `Bearer ${jwtToken}`,
-          "Content-Type": "multipart/form-data",
-        },
-        params: {
-          username: username,
-        },
-      });
+      await createBoard(title, content, files);
       alert("게시물 작성 완료");
       navigation("/board");
     } catch (error) {
-      console.error("게시물 작성 오류: ", error);
+      console.error("게시물 작성 오류:", error);
       alert("게시물 작성 실패");
     }
   };

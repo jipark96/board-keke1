@@ -18,21 +18,14 @@ import {
   Wrapper,
 } from "./BoardListStyles";
 
-import axios from "axios";
 import Layout from "../../layout/Layout";
 import Btn from "../common/btn/Btn";
 import { formatDate } from "../../utils/Utils";
-
-interface BoardListProps {
-  id: number;
-  title: string;
-  username: string;
-  createdAt: string;
-  view: number;
-}
+import { BoardListData } from "../../types/board.data";
+import { getBoardList } from "../../api/boardApi";
 
 const BoardList = () => {
-  const [posts, setPosts] = useState<BoardListProps[]>([]);
+  const [posts, setPosts] = useState<BoardListData[]>([]);
   const [currentPage, setCurrentPage] = useState<number>(0);
   const [totalPages, setTotalPages] = useState<number>(0);
   const [searchKeyword, setSearchKeyword] = useState<string>("");
@@ -75,13 +68,10 @@ const BoardList = () => {
   //[검색]
   const handleSearch = async () => {
     try {
-      const response = await axios.get(
-        `http://localhost:8080/board?page=${currentPage}&size=8&keyword=${searchKeyword}`
-      );
-      const result = response.data.result.boardList;
-      setPosts(result);
+      const result = await getBoardList(currentPage, 8, searchKeyword);
+      setPosts(result.boardList);
       // 전체 페이지 수 계산
-      const totalCount = response.data.result.totalCount;
+      const totalCount = result.totalCount;
       const totalPages = Math.ceil(totalCount / 8);
       setTotalPages(totalPages);
     } catch (error) {
@@ -92,14 +82,11 @@ const BoardList = () => {
   useEffect(() => {
     const fetchPosts = async () => {
       try {
-        const response = await axios.get(
-          `http://localhost:8080/board?page=${currentPage}&size=8`
-        );
-        const result = response.data.result.boardList;
-        setPosts(result);
+        const result = await getBoardList(currentPage, 8);
+        setPosts(result.boardList);
 
         // 전체 페이지 수 계산
-        const totalCount = response.data.result.totalCount;
+        const totalCount = result.totalCount;
         const totalPages = Math.ceil(totalCount / 8);
         setTotalPages(totalPages);
       } catch (error) {
@@ -108,8 +95,7 @@ const BoardList = () => {
     };
 
     fetchPosts(); // 컴포넌트가 마운트되었을 때 게시물 목록을 불러옴
-  }, [currentPage, searchKeyword]);
-
+  }, [currentPage]);
   return (
     <>
       <Layout>
