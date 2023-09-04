@@ -1,10 +1,11 @@
 import React from "react";
-import BoardList from "../../components/board/BoardList";
+import BoardList from "../../components/board/boardlist/BoardList";
+import Board from "../../components/board/Board";
 
 const BoardListPage = () => {
   return (
     <>
-      <BoardList />
+      <Board />
     </>
   );
 };

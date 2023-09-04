@@ -1,10 +1,9 @@
-import React from "react";
-import Detail from "../../../components/board/detail/Detail";
+import Details from "../../../components/board/detail/DetailPage";
 
 const DetailPage = () => {
   return (
     <>
-      <Detail />
+      <Details />
     </>
   );
 };

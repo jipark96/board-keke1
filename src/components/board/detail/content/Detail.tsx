@@ -10,13 +10,13 @@ import {
   TitleWrap,
   UserName,
 } from "./DetailStyles";
-import Btn from "../../common/btn/Btn";
-import Comment from "./comment/Comment";
-import Layout from "../../../layout/Layout";
+import Btn from "../../../common/btn/Btn";
+import Comment from "../comment/Comment";
+
 import { useNavigate, useParams } from "react-router-dom";
-import { formatDate } from "../../../utils/Utils";
-import { BoardDetailData } from "../../../types/board.data";
-import { deleteBoard, getBoard, getFile } from "../../../api/boardApi";
+import { formatDate } from "../../../../utils/Utils";
+import { BoardDetailData } from "../../../../types/board.data";
+import { deleteBoard, getBoard, getFile } from "../../../../api/boardApi";
 
 const Detail = () => {
   const { boardId } = useParams<{ boardId: string }>();
@@ -75,7 +75,7 @@ const Detail = () => {
   };
 
   return (
-    <Layout>
+    <>
       <BoardWrapper>
         {post && (
           <>
@@ -121,7 +121,7 @@ const Detail = () => {
           </>
         )}
       </BoardWrapper>
-    </Layout>
+    </>
   );
 };
 

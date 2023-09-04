@@ -18,11 +18,11 @@ import {
   Wrapper,
 } from "./BoardListStyles";
 
-import Layout from "../../layout/Layout";
-import Btn from "../common/btn/Btn";
-import { formatDate } from "../../utils/Utils";
-import { BoardListData } from "../../types/board.data";
-import { getBoardList } from "../../api/boardApi";
+import Layout from "../../../layout/Layout";
+import Btn from "../../common/btn/Btn";
+import { formatDate } from "../../../utils/Utils";
+import { BoardListData } from "../../../types/board.data";
+import { getBoardList } from "../../../api/boardApi";
 
 const BoardList = () => {
   const [posts, setPosts] = useState<BoardListData[]>([]);
@@ -98,59 +98,57 @@ const BoardList = () => {
   }, [currentPage]);
   return (
     <>
-      <Layout>
-        <Wrapper>
-          <BoardHeader>전체 게시물</BoardHeader>
-          <Cotainer>
-            <thead>
-              <TitleNumber>글번호</TitleNumber>
-              <TitleMain>제목</TitleMain>
-              <TitleOther1>아이디</TitleOther1>
-              <TitleOther2>등록일자</TitleOther2>
-              <TitleNumber>조회수</TitleNumber>
-            </thead>
-            <tbody>
-              {posts.map((post, i) => (
-                <tr key={post.id}>
-                  <Content>{post.id}</Content>
-                  <Content
-                    onClick={() => navigation(`/board/${post.id}`)}
-                    style={{ cursor: "pointer" }}
-                  >
-                    {post.title}
-                  </Content>
-                  <Content>{post.username}</Content>
-                  <Content>{formatDate(post.createdAt)}</Content>
-                  <Content>{post.view}</Content>
-                </tr>
-              ))}
-            </tbody>
-          </Cotainer>
-          <SearchWrap>
-            <Input
-              placeholder="키워드를 입력하세요"
-              value={searchKeyword}
-              onChange={(e) => setSearchKeyword(e.target.value)}
-            />
-            <Btn text="검색" size="small" onClick={handleSearch} />
-            <BtnWrapper>
-              <Btn
-                text="글쓰기"
-                size="small"
-                disabled={false}
-                onClick={handleBtnClick}
-              />
-            </BtnWrapper>
-          </SearchWrap>
-          <PageWrap>
-            <PageArrow onClick={handlePrevPage}>{"<"}</PageArrow>
-            {Array.from({ length: totalPages }, (_, index) => (
-              <PageButton key={index} page={index} />
+      <Wrapper>
+        <BoardHeader>전체 게시물</BoardHeader>
+        <Cotainer>
+          <thead>
+            <TitleNumber>글번호</TitleNumber>
+            <TitleMain>제목</TitleMain>
+            <TitleOther1>아이디</TitleOther1>
+            <TitleOther2>등록일자</TitleOther2>
+            <TitleNumber>조회수</TitleNumber>
+          </thead>
+          <tbody>
+            {posts.map((post, i) => (
+              <tr key={post.id}>
+                <Content>{post.id}</Content>
+                <Content
+                  onClick={() => navigation(`/board/${post.id}`)}
+                  style={{ cursor: "pointer" }}
+                >
+                  {post.title}
+                </Content>
+                <Content>{post.username}</Content>
+                <Content>{formatDate(post.createdAt)}</Content>
+                <Content>{post.view}</Content>
+              </tr>
             ))}
-            <PageArrow onClick={handleNextPage}>{">"}</PageArrow>
-          </PageWrap>
-        </Wrapper>
-      </Layout>
+          </tbody>
+        </Cotainer>
+        <SearchWrap>
+          <Input
+            placeholder="키워드를 입력하세요"
+            value={searchKeyword}
+            onChange={(e) => setSearchKeyword(e.target.value)}
+          />
+          <Btn text="검색" size="small" onClick={handleSearch} />
+          <BtnWrapper>
+            <Btn
+              text="글쓰기"
+              size="small"
+              disabled={false}
+              onClick={handleBtnClick}
+            />
+          </BtnWrapper>
+        </SearchWrap>
+        <PageWrap>
+          <PageArrow onClick={handlePrevPage}>{"<"}</PageArrow>
+          {Array.from({ length: totalPages }, (_, index) => (
+            <PageButton key={index} page={index} />
+          ))}
+          <PageArrow onClick={handleNextPage}>{">"}</PageArrow>
+        </PageWrap>
+      </Wrapper>
     </>
   );
 };
