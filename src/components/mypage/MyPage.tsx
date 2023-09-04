@@ -4,7 +4,7 @@ import Layout from "../../layout/Layout";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 import { User } from "../../types/user.data";
-import { getUser } from "../../api/userApi";
+import { deleteUser, getUser } from "../../api/userApi";
 
 const MyPageProps = {
   id: 0,
@@ -23,19 +23,16 @@ const MyPage = () => {
   const handleDelete = async () => {
     if (window.confirm("정말로 회원 탈퇴하시겠습니까??")) {
       try {
-        await axios.delete(`http://localhost:8080/user/${userId}`, {
-          headers: {
-            "X-ACCESS-TOKEN": jwtToken,
-          },
-        });
+        if (userId) {
+          await deleteUser(userId);
+          // [회원 탈퇴 후 로컬 스토리지에서 관련 정보 제거]
+          localStorage.removeItem("jwtToken");
+          localStorage.removeItem("name");
+          localStorage.removeItem("username");
+          localStorage.removeItem("userId");
 
-        // [회원 탈퇴 후 로컬 스토리지에서 관련 정보 제거]
-        localStorage.removeItem("jwtToken");
-        localStorage.removeItem("name");
-        localStorage.removeItem("username");
-        localStorage.removeItem("userId");
-
-        navigation("/");
+          navigation("/");
+        }
       } catch (error) {
         console.error("Error : ", error);
       }

@@ -9,6 +9,7 @@ import Layout from "../../layout/Layout";
 import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import { joinUser } from "../../api/userApi";
 
 interface FormState {
   username: string;
@@ -32,20 +33,22 @@ const Join = () => {
   // [회원 가입 데이터를 서버로 전송]
   const joinSubmit = async () => {
     const { username, name, email, password, passwordCheck } = joinData;
-    const dataToSend = {
+
+    console.log("Data to send:", {
       username,
       name,
       email,
       password,
       passwordCheck,
-    };
-
-    console.log("Data to send:", dataToSend);
+    });
 
     try {
-      const response = await axios.post(
-        "http://localhost:8080/user",
-        dataToSend
+      const response = await joinUser(
+        username,
+        name,
+        email,
+        password,
+        passwordCheck
       );
 
       if (response.status === 200) {

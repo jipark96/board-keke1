@@ -1,4 +1,3 @@
-import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import Layout from "../../../layout/Layout";
@@ -13,7 +12,7 @@ import {
 
 import PasswordField from "../../common/passwordfield/PasswordField";
 import Btn from "../../common/btn/Btn";
-import { getUser } from "../../../api/userApi";
+import { getUser, patchUser } from "../../../api/userApi";
 
 const Edit = () => {
   const { userId } = useParams();
@@ -21,7 +20,6 @@ const Edit = () => {
   const [name, setName] = useState("");
   const [password, setPassword] = useState("");
   const navigation = useNavigate();
-  const jwtToken = localStorage.getItem("jwtToken");
 
   //[이메일]
   const handleEmailChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -58,23 +56,11 @@ const Edit = () => {
   //[수정하기]
   const handlePatchClick = async () => {
     try {
-      const requestData = {
-        email: email,
-        name: name,
-        password: password,
-      };
+      if (userId) {
+        await patchUser(userId, email, name, password);
 
-      await axios.patch(
-        `http://localhost:8080/user/edit/${userId}`,
-        requestData,
-        {
-          headers: {
-            "X-ACCESS-TOKEN": jwtToken,
-          },
-        }
-      );
-
-      navigation("/");
+        navigation("/");
+      }
     } catch (error) {
       console.error(error);
     }
