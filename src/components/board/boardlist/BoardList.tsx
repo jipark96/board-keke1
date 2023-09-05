@@ -6,6 +6,7 @@ import {
   BtnWrapper,
   Content,
   Cotainer,
+  DropdownWrapper,
   Input,
   PageArrow,
   PageNumber,
@@ -124,7 +125,9 @@ const BoardList = () => {
     <>
       <Wrapper>
         <BoardHeader>전체 게시물</BoardHeader>
-        <Dropdown onChange={handleSortChange} />
+        <DropdownWrapper>
+          <Dropdown onChange={handleSortChange} />
+        </DropdownWrapper>
         <Cotainer>
           <thead>
             <TitleNumber>글번호</TitleNumber>

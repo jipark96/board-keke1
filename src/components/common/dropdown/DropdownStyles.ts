@@ -8,8 +8,8 @@ export const Wrapper = styled.div`
   display: flex;
   justify-content: space-around;
   align-items: center;
-  margin-left: 10px;
-  font-size: 20px;
+  margin-right: 10px;
+  font-size: 18px;
   background-color: #eee;
   width: 80px;
   height: 50px;

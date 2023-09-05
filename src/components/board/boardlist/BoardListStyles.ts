@@ -22,7 +22,7 @@ export const Cotainer = styled.table`
   line-height: 1.5;
   border-top: 1px solid #ccc;
   border-left: 1px solid #ccc;
-  margin: 20px 10px;
+  margin: 60px 10px;
 `;
 export const Title = styled.th`
   width: 150px;
@@ -99,4 +99,8 @@ export const Input = styled.input`
   height: 42px;
   width: 520px;
   margin-right: 16px;
+`;
+
+export const DropdownWrapper = styled.div`
+  float: right;
 `;
