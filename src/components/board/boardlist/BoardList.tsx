@@ -18,11 +18,11 @@ import {
   Wrapper,
 } from "./BoardListStyles";
 
-import Layout from "../../../layout/Layout";
 import Btn from "../../common/btn/Btn";
 import { formatDate } from "../../../utils/Utils";
 import { BoardListData } from "../../../types/board.data";
 import { getBoardList } from "../../../api/boardApi";
+import Dropdown from "../../common/dropdown/Dropdown";
 
 const BoardList = () => {
   const [posts, setPosts] = useState<BoardListData[]>([]);
@@ -100,6 +100,7 @@ const BoardList = () => {
     <>
       <Wrapper>
         <BoardHeader>전체 게시물</BoardHeader>
+        <Dropdown />
         <Cotainer>
           <thead>
             <TitleNumber>글번호</TitleNumber>
