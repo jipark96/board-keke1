@@ -7,10 +7,11 @@ const username = localStorage.getItem("username");
 export const getBoardList = async (
   page: number,
   size: number = 8,
-  keyword: string = ""
+  keyword: string = "",
+  sortType: string = ""
 ) => {
   const response = await axios.get(
-    `http://localhost:8080/board?page=${page}&size=${size}&keyword=${keyword}`
+    `http://localhost:8080/board?page=${page}&size=${size}&keyword=${keyword}&sortType=${sortType}`
   );
   return response.data.result;
 };
