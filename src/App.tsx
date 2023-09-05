@@ -10,6 +10,7 @@ import MyPagePage from "./pages/mypage/MyPage";
 import EditMyPage from "./pages/mypage/edit/Edit";
 import AdminPage from "./pages/admin/Admin";
 import BoardManagementPage from "./pages/admin/management/board/BoardManagement";
+import UserManagementPage from "./pages/admin/management/user/UserManagement";
 
 const loading = <div>화면을 불러오는 중 입니다.</div>;
 
@@ -36,6 +37,10 @@ const App: React.FunctionComponent = () => {
           <Route
             path="/admin/management/board"
             element={<BoardManagementPage />}
+          />
+          <Route
+            path="/admin/management/user"
+            element={<UserManagementPage />}
           />
           <Route path="/404" element={<Page404 />} />
           <Route path="/500" element={<Page500 />} />

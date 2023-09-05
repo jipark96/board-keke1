@@ -16,6 +16,18 @@ export const getUser = async (userId: string) => {
   return response.data.result;
 };
 
+//[회원 전체 조회]
+export const getUserList = async (
+  userId: string,
+  username: string,
+  email: string,
+  name: string,
+  password: string
+) => {
+  const response = await axios.get("http://localhost:8080/user");
+  return response.data.result;
+};
+
 //[회원 수정]
 export const patchUser = async (
   userId: string,
