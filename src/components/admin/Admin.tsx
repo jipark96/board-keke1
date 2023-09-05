@@ -1,16 +1,16 @@
 import React from "react";
 import Sidebar from "./sidebar/Sidebar";
 import Layout from "../../layout/Layout";
-import { Cotainer } from "./AdminStyles";
+import { Container } from "./AdminStyles";
 import Content from "./content/Content";
 
 const Admin = () => {
   return (
     <Layout>
-      <Cotainer>
+      <Container>
         <Sidebar />
         <Content />
-      </Cotainer>
+      </Container>
     </Layout>
   );
 };

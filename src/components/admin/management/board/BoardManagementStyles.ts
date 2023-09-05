@@ -5,3 +5,7 @@ export const Container = styled.div`
   margin-bottom: 100px;
   display: flex;
 `;
+
+export const Wrapper = styled.div`
+  flex: 4;
+`;

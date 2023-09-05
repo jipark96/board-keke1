@@ -40,13 +40,3 @@ export interface CommentData {
     parentCommentId: number | null;
   }[];
 }
-
-export interface ReplyData {
-  reply: {
-    id: number;
-    userId: number;
-    username: string;
-    content: string;
-    createdAt: string;
-  };
-}

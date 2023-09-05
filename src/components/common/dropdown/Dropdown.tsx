@@ -16,12 +16,14 @@ interface DropdownProps {
 const Dropdown: React.FC<DropdownProps> = ({ onChange }) => {
   const [orderIsOpen, orderRef, orderHandler] = useDetectClose(false);
 
+  // 드롭다운 버튼을 클릭할 때 실행되는 이벤트 핸들러
   const handleOrderClick: MouseEventHandler<HTMLDivElement> = (event) => {
     if (typeof orderHandler === "function") {
       orderHandler();
     }
   };
 
+  // 정렬 옵션을 클릭할 때 실행되는 이벤트 핸들러
   const handleSortOptionClick = (option: string) => {
     if (typeof onChange === "function") {
       onChange(option);
