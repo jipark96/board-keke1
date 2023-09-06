@@ -4,6 +4,17 @@ export interface BoardListData {
   username: string;
   createdAt: string;
   view: number;
+  likeCount: number;
+  commentList?: {
+    id: number;
+    boardId: number;
+    userId: number;
+    username: string;
+    content: string;
+    createdAt: string;
+    parentCommentId?: number | null;
+    replies?: Array<string>;
+  }[];
 }
 
 export interface BoardDetailData {

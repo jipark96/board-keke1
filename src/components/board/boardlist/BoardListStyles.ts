@@ -1,7 +1,7 @@
 import { styled } from "styled-components";
 
 export const Wrapper = styled.div`
-  width: 800px;
+  width: 900px;
   margin: 0 auto;
   margin-top: 80px;
 `;
@@ -41,7 +41,7 @@ export const TitleNumber = styled(Title)`
 `;
 
 export const TitleMain = styled(Title)`
-  width: 45%;
+  width: 40%;
 `;
 
 export const TitleOther1 = styled(Title)`
@@ -49,6 +49,9 @@ export const TitleOther1 = styled(Title)`
 `;
 export const TitleOther2 = styled(Title)`
   width: 20%;
+`;
+export const TitleOther3 = styled(Title)`
+  width: 15%;
 `;
 
 export const Content = styled.td`

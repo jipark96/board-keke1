@@ -133,9 +133,7 @@ const Detail = () => {
               <TitleWrap>
                 <BoardHeader>
                   <BoardTitle>{post.title}</BoardTitle>
-                  <BoardLike onClick={handleLike}>
-                    좋아요 {isLiked ? "❤️" : "🤍"}
-                  </BoardLike>
+                  <BoardLike onClick={handleLike}>좋아요 👍🏻</BoardLike>
                 </BoardHeader>
                 <BoardContent>{post.content}</BoardContent>
               </TitleWrap>

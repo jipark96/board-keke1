@@ -16,6 +16,7 @@ import {
   TitleNumber,
   TitleOther1,
   TitleOther2,
+  TitleOther3,
   Wrapper,
 } from "./BoardListStyles";
 
@@ -134,7 +135,7 @@ const BoardList = () => {
             <TitleMain>제목</TitleMain>
             <TitleOther1>아이디</TitleOther1>
             <TitleOther2>등록일자</TitleOther2>
-            <TitleNumber>조회수</TitleNumber>
+            <TitleOther3>조회수</TitleOther3>
           </thead>
           <tbody>
             {posts.map((post, i) => (
@@ -148,7 +149,10 @@ const BoardList = () => {
                 </Content>
                 <Content>{post.username}</Content>
                 <Content>{formatDate(post.createdAt)}</Content>
-                <Content>{post.view}</Content>
+                <Content>
+                  👁‍🗨{post.view} 👍🏻{post.likeCount} 💭
+                  {post.commentList?.length || 0}
+                </Content>
               </tr>
             ))}
           </tbody>
