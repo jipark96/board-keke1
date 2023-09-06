@@ -104,3 +104,12 @@ export const patchBoard = async (
   );
   return response.data;
 };
+
+//[좋아요]
+export const updateLike = async (boardId: string, userId: string) => {
+  const response = await axios.post(`http://localhost:8080/like`, {
+    boardId,
+    userId,
+  });
+  return response;
+};

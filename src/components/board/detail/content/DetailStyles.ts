@@ -63,6 +63,11 @@ export const BoardContent = styled.div`
   font-size: 16px;
 `;
 
+export const BoardLike = styled.div`
+  font-size: 18px;
+  cursor: pointer;
+`;
+
 export const EditDeleteButton = styled.div`
   display: flex;
   flex-direction: row-reverse;

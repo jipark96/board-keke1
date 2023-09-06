@@ -7,13 +7,14 @@ export interface BoardListData {
 }
 
 export interface BoardDetailData {
-  id: number;
-  title: string;
-  content: string;
-  username: string;
-  createdAt: string;
-  view: number;
-  commentList: {
+  id?: number;
+  title?: string;
+  content?: string;
+  username?: string;
+  createdAt?: string;
+  view?: number;
+  likeCount: number;
+  commentList?: {
     id: number;
     boardId: number;
     userId: number;
@@ -22,7 +23,7 @@ export interface BoardDetailData {
     createdAt: string;
     parentCommentId: number | null;
   }[];
-  fileList: {
+  fileList?: {
     fileId: number;
     fileName: string;
     filePath: string;

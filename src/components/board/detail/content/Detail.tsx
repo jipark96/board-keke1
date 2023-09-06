@@ -3,6 +3,7 @@ import {
   BoardBody,
   BoardContent,
   BoardHeader,
+  BoardLike,
   BoardTitle,
   BoardWrapper,
   Date,
@@ -16,14 +17,21 @@ import Comment from "../comment/Comment";
 import { useNavigate, useParams } from "react-router-dom";
 import { formatDate } from "../../../../utils/Utils";
 import { BoardDetailData } from "../../../../types/board.data";
-import { deleteBoard, getBoard, getFile } from "../../../../api/boardApi";
+import {
+  deleteBoard,
+  getBoard,
+  getFile,
+  updateLike,
+} from "../../../../api/boardApi";
 
 const Detail = () => {
   const { boardId } = useParams<{ boardId: string }>();
   const [post, setPost] = useState<BoardDetailData | null>(null);
+  const [isLiked, setIsLiked] = useState(false);
   const navigation = useNavigate();
 
   const username = localStorage.getItem("username");
+  const userId = localStorage.getItem("userId");
 
   useEffect(() => {
     const fetchData = async () => {
@@ -74,6 +82,30 @@ const Detail = () => {
     }
   };
 
+  //[좋아요]
+  const handleLike = async () => {
+    try {
+      if (boardId && userId) {
+        const result = await updateLike(boardId, userId);
+
+        if (result.status === 200) {
+          //[좋아요 상태 토글]
+          setIsLiked(!isLiked);
+
+          //좋아요 수 업데이트
+          if (post) {
+            setPost({
+              ...post,
+              likeCount: post.likeCount + (isLiked ? -1 : +1),
+            });
+          }
+        }
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return (
     <>
       <BoardWrapper>
@@ -92,13 +124,19 @@ const Detail = () => {
             <BoardHeader>
               <UserName>아이디: {post.username}</UserName>
               <Date>
-                {formatDate(post.createdAt)} 조회수: {post.view}
+                {formatDate(post.createdAt)} 조회수: {post.view} 좋아요:{" "}
+                {post.likeCount}
               </Date>
             </BoardHeader>
             <hr />
             <BoardBody>
               <TitleWrap>
-                <BoardTitle>{post.title}</BoardTitle>
+                <BoardHeader>
+                  <BoardTitle>{post.title}</BoardTitle>
+                  <BoardLike onClick={handleLike}>
+                    좋아요 {isLiked ? "❤️" : "🤍"}
+                  </BoardLike>
+                </BoardHeader>
                 <BoardContent>{post.content}</BoardContent>
               </TitleWrap>
             </BoardBody>
@@ -117,7 +155,7 @@ const Detail = () => {
                   </a>
                 </div>
               ))}
-            <Comment commentList={post.commentList} />
+            <Comment commentList={post?.commentList || []} />
           </>
         )}
       </BoardWrapper>
