@@ -17,13 +17,7 @@ export const getUser = async (userId: string) => {
 };
 
 //[회원 전체 조회]
-export const getUserList = async (
-  userId: string,
-  username: string,
-  email: string,
-  name: string,
-  password: string
-) => {
+export const getUserList = async () => {
   const response = await axios.get("http://localhost:8080/user");
   return response.data.result;
 };

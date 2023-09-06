@@ -61,7 +61,6 @@ const BoardContent = () => {
     if (window.confirm("정말로 이 게시물을 삭제하시겠습니까?")) {
       try {
         await deleteBoard(postId);
-        console.log("삭제완료");
         // 게시물을 삭제한 후 목록을 다시 불러옴
         const result = await getBoardList(
           currentPage,

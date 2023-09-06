@@ -41,14 +41,11 @@ export const TitleNumber = styled(Title)`
 `;
 
 export const TitleMain = styled(Title)`
-  width: 35%;
+  width: 45%;
 `;
 
 export const TitleOther1 = styled(Title)`
-  width: 15%;
-`;
-export const TitleOther2 = styled(Title)`
-  width: 20%;
+  width: 25%;
 `;
 export const Remove = styled(Title)`
   width: 10%;
