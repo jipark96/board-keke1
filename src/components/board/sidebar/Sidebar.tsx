@@ -10,6 +10,8 @@ import {
 import { useNavigate } from "react-router-dom";
 
 const Sidebar = () => {
+  const userId = localStorage.getItem("userId");
+
   const navigation = useNavigate();
 
   const handleBoard = () => {
@@ -20,6 +22,10 @@ const Sidebar = () => {
     navigation("/board/write");
   };
 
+  const handleUserBoard = () => {
+    navigation(`/mypage/myboard/${userId}`);
+  };
+
   return (
     <Container>
       <SidebarWrapper>
@@ -28,7 +34,9 @@ const Sidebar = () => {
           <SidebarList>
             <SidebarListItem onClick={handleBoard}>Home</SidebarListItem>
             <SidebarListItem onClick={handleBoardWrite}>글쓰기</SidebarListItem>
-            <SidebarListItem>내 글 보기</SidebarListItem>
+            <SidebarListItem onClick={handleUserBoard}>
+              내 글 보기
+            </SidebarListItem>
             <SidebarListItem>내 댓글 보기</SidebarListItem>
           </SidebarList>
         </SidebarMenu>

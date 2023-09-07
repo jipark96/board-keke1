@@ -74,3 +74,24 @@ export const joinUser = async (
   const response = await axios.post("http://localhost:8080/user", dataToSend);
   return response;
 };
+
+//[자기 글 리스트 조회]
+export const getUserBoard = async (
+  userId: string,
+  page: number,
+  size: number = 8,
+  keyword: string = "",
+  sortType: string = ""
+) => {
+  const jwtToken = localStorage.getItem("jwtToken");
+
+  const response = await axios.get(
+    `http://localhost:8080/user/${userId}/board?page=${page}&size=${size}&keyword=${keyword}&sortType=${sortType}`,
+    {
+      headers: {
+        "X-ACCESS-TOKEN": jwtToken,
+      },
+    }
+  );
+  return response.data.result;
+};

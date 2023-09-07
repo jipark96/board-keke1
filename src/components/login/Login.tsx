@@ -4,7 +4,6 @@ import LoginTextField from "../common/logintextfield/LoginTextField";
 import { Link, useNavigate } from "react-router-dom";
 import Btn from "../common/btn/Btn";
 import Layout from "../../layout/Layout";
-import axios from "axios";
 import Modal from "./modal/Modal";
 import { postLogin } from "../../api/userApi";
 

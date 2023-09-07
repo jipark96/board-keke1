@@ -15,7 +15,7 @@ export const BoardHeader = styled.div`
   flex-direction: column;
 `;
 
-export const Cotainer = styled.table`
+export const Container = styled.table`
   border-collapse: separate;
   border-spacing: 0;
   text-align: left;

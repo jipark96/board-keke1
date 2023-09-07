@@ -1,9 +1,11 @@
 import { configureStore } from "@reduxjs/toolkit";
 import join from "./features/join";
+import user from "./features/user";
 
 const store = configureStore({
   reducer: {
     join,
+    user,
   },
 });
 

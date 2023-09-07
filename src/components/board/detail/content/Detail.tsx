@@ -124,7 +124,7 @@ const Detail = () => {
             <BoardHeader>
               <UserName>아이디: {post.username}</UserName>
               <Date>
-                {formatDate(post.createdAt)} 조회수: {post.view} 좋아요:{" "}
+                {formatDate(post.createdAt)} 👁‍🗨: {post.view} 👍🏻:{" "}
                 {post.likeCount}
               </Date>
             </BoardHeader>
