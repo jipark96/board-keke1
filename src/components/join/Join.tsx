@@ -1,15 +1,13 @@
 import React, { useState } from "react";
 import TextField from "../common/textfield/TextField";
 import { JoinCotainer, JoinTitle, JoinWrap } from "./JoinStyles";
-import { useForm } from "react-hook-form";
 import { setJoinData } from "../../redux/features/join";
 import PasswordField from "../common/passwordfield/PasswordField";
 import Btn from "../common/btn/Btn";
 import Layout from "../../layout/Layout";
-import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { joinUser } from "../../api/userApi";
+import { checkUsername, joinUser } from "../../api/userApi";
 
 interface FormState {
   username: string;
@@ -67,6 +65,24 @@ const Join = () => {
 
   //[폼 객체]
   const [form, setForm] = useState<FormState>(initialState);
+
+  //[아이디 중복 확인]
+  const [isUsernameAvailable, setIsUsernameAvailable] = useState(true);
+
+  const handleCheckUsername = async () => {
+    try {
+      const result = await checkUsername(form.username);
+      if (result.exists === true) {
+        setIsUsernameAvailable(false);
+        alert("해당 아이디는 이미 사용중입니다.");
+      } else {
+        setIsUsernameAvailable(true);
+        alert("사용 가능한 아이디입니다.");
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
   //[아이디 변경 핸들러]
   const handleUserNameChange = (e: any) => {
@@ -142,6 +158,7 @@ const Join = () => {
             value={form.username}
             onChange={handleUserNameChange}
           />
+          <button onClick={handleCheckUsername}>중복확인</button>
           <TextField
             title="이메일"
             type="email"

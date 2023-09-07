@@ -75,6 +75,14 @@ export const joinUser = async (
   return response;
 };
 
+//[아이디 중복 확인]
+export const checkUsername = async (username: string) => {
+  const response = await axios.get(
+    `http://localhost:8080/user/check/${username}`
+  );
+  return response.data;
+};
+
 //[자기 글 리스트 조회]
 export const getUserBoard = async (
   userId: string,
