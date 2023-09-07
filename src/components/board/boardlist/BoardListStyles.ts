@@ -100,8 +100,7 @@ export const SearchWrap = styled.div`
 
 export const Input = styled.input`
   height: 42px;
-  width: 520px;
-  margin-right: 16px;
+  width: 600px;
 `;
 
 export const DropdownWrapper = styled.div`

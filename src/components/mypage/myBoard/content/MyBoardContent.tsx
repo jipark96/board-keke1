@@ -210,7 +210,9 @@ const MyBoardContent = () => {
             value={searchKeyword}
             onChange={(e) => setSearchKeyword(e.target.value)}
           />
-          <Btn text="검색" size="small" onClick={handleSearch} />
+          <BtnWrapper>
+            <Btn text="검색" size="small" onClick={handleSearch} />
+          </BtnWrapper>
           <BtnWrapper>
             <Btn
               text="글쓰기"
