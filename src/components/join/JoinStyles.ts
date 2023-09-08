@@ -27,3 +27,25 @@ export const JoinWrap = styled.div`
   align-items: flex-start;
   gap: 20px;
 `;
+
+export const IdFieldWrap = styled.div`
+  display: flex;
+`;
+
+export const BtnWrapper = styled.div`
+  margin-top: 52px;
+  margin-left: 50px;
+`;
+
+export const Button = styled.button`
+  width: 100px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 46px;
+  border: none;
+  font-weight: 600;
+  font-size: 20px;
+  cursor: pointer;
+  background-color: #eee;
+`;

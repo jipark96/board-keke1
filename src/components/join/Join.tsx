@@ -1,6 +1,13 @@
 import React, { useState } from "react";
 import TextField from "../common/textfield/TextField";
-import { JoinCotainer, JoinTitle, JoinWrap } from "./JoinStyles";
+import {
+  BtnWrapper,
+  Button,
+  IdFieldWrap,
+  JoinCotainer,
+  JoinTitle,
+  JoinWrap,
+} from "./JoinStyles";
 import { setJoinData } from "../../redux/features/join";
 import PasswordField from "../common/passwordfield/PasswordField";
 import Btn from "../common/btn/Btn";
@@ -8,6 +15,8 @@ import Layout from "../../layout/Layout";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { checkUsername, joinUser } from "../../api/userApi";
+import IdField from "../common/idfield/IdField";
+import EmailField from "../common/emailfield/EmailField";
 
 interface FormState {
   username: string;
@@ -72,7 +81,7 @@ const Join = () => {
   const handleCheckUsername = async () => {
     try {
       const result = await checkUsername(form.username);
-      if (result.exists === true) {
+      if (result === true) {
         setIsUsernameAvailable(false);
         alert("해당 아이디는 이미 사용중입니다.");
       } else {
@@ -91,8 +100,7 @@ const Join = () => {
   };
 
   //[이메일 변경 핸들러]
-  const handleEmailChange = (e: any) => {
-    const value = e.target.value;
+  const handleEmailChange = (value: string) => {
     setForm((prevForm) => ({ ...prevForm, email: value }));
     dispatch(setJoinData({ email: value }));
   };
@@ -151,20 +159,24 @@ const Join = () => {
       <JoinCotainer>
         <JoinTitle>회원 가입</JoinTitle>
         <JoinWrap>
-          <TextField
-            title="아이디"
-            type="text"
-            placeholder="아이디를 입력해주세요"
-            value={form.username}
-            onChange={handleUserNameChange}
-          />
-          <button onClick={handleCheckUsername}>중복확인</button>
-          <TextField
+          <IdFieldWrap>
+            <IdField
+              title="아이디"
+              type="text"
+              placeholder="아이디를 입력해주세요"
+              value={form.username}
+              onChange={handleUserNameChange}
+            />
+            <BtnWrapper>
+              <Button onClick={handleCheckUsername}>중복확인</Button>
+            </BtnWrapper>
+          </IdFieldWrap>
+          <EmailField
             title="이메일"
             type="email"
             placeholder="이메일을 입력해주세요"
-            value={form.email}
-            onChange={(e) => handleEmailChange(e)}
+            required="올바른 이메일 형식을 입력해주세요."
+            onValueChange={handleEmailChange}
           />
           <TextField
             title="이름"

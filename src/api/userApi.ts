@@ -80,7 +80,7 @@ export const checkUsername = async (username: string) => {
   const response = await axios.get(
     `http://localhost:8080/user/check/${username}`
   );
-  return response.data;
+  return response.data.result;
 };
 
 //[자기 글 리스트 조회]
