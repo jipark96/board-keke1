@@ -48,6 +48,8 @@ const Header = () => {
     localStorage.removeItem("name");
     localStorage.removeItem("username");
     localStorage.removeItem("userId");
+    localStorage.removeItem("role");
+    localStorage.removeItem("email");
     setIsLoggedIn(false);
 
     window.dispatchEvent(new Event("logout"));

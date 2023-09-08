@@ -84,4 +84,5 @@ export const DropdownUl = styled.ul`
 export const DropdownLi = styled.li`
   font-size: 16px;
   text-decoration: none;
+  cursor: pointer;
 `;

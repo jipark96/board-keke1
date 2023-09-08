@@ -46,13 +46,14 @@ const Login = () => {
       const name = result.name;
       const userId = result.id;
       const email = result.email;
-
+      const role = result.role;
       //[로컬 스토리지에 저장]
       localStorage.setItem("jwtToken", jwtToken);
       localStorage.setItem("name", name);
       localStorage.setItem("email", email);
       localStorage.setItem("username", username);
       localStorage.setItem("userId", userId);
+      localStorage.setItem("role", role);
 
       navigate("/board");
     } catch (error) {
