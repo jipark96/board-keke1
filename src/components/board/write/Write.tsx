@@ -1,10 +1,14 @@
 import React, { useState } from "react";
 import {
   BtnWrapper,
+  Image,
+  ImgRemove,
+  ImgWrapper,
   LargeTextFieldInput,
   LargeTextFieldTitle,
   Remove,
   TextFieldWrap,
+  Ul,
   Wrapper,
 } from "./WriteStyles";
 import Btn from "../../common/btn/Btn";
@@ -18,6 +22,9 @@ const Write = () => {
   const [content, setContent] = useState("");
   const [files, setFiles] = useState<File[]>([]);
   const [selectedFiles, setSelectedFiles] = useState<string[]>([]);
+
+  const [images, setImages] = useState<File[]>([]);
+  const [selectedImageUrls, setSelectedImageUrls] = useState<string[]>([]);
 
   const navigation = useNavigate();
 
@@ -56,10 +63,33 @@ const Write = () => {
     setFiles(updatedFiles);
   };
 
+  //[이미지 업로드]
+  const handleImageUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
+    if (event.target.files) {
+      // 이미지 파일들을 배열로 변환
+      const newImages = Array.from(event.target.files);
+
+      // 기존 이미지 목록에 새로운 이미지들 추가
+      setImages([...images, ...newImages]);
+
+      // Blob URL 생성 후 selectedImageUrls 상태 업데이트
+      const newImageUrls = newImages.map((image) => URL.createObjectURL(image));
+      setSelectedImageUrls([...selectedImageUrls, ...newImageUrls]);
+    }
+  };
+
+  //[이미지 삭제]
+  const handleImageRemove = (index: number) => {
+    const updatedImageUrls = selectedImageUrls.filter(
+      (_image, idx) => idx !== index
+    );
+    setSelectedImageUrls(updatedImageUrls);
+  };
+
   //[글 쓰기]
   const handleSubmit = async () => {
     try {
-      await createBoard(title, content, files);
+      await createBoard(title, content, files, images);
       alert("게시물 작성 완료");
       navigation("/board");
     } catch (error) {
@@ -94,14 +124,35 @@ const Write = () => {
           onChange={handleFileChange}
           multiple
         />
-        <ul>
+        <Ul>
           {selectedFiles.map((fileName, index) => (
             <li key={index}>
               {fileName}
               <Remove onClick={() => handleFileRemove(index)}> &times;</Remove>
             </li>
           ))}
-        </ul>
+        </Ul>
+
+        <TextField
+          title="사진"
+          type="file"
+          placeholder="이미지 파일을 올려주세요."
+          onChange={handleImageUpload}
+          multiple
+        />
+        <Ul>
+          {selectedImageUrls.map((imageUrl, index) => (
+            <li key={index}>
+              <ImgWrapper>
+                <Image src={imageUrl} alt="Uploaded" />{" "}
+                <ImgRemove onClick={() => handleImageRemove(index)}>
+                  {" "}
+                  &times;
+                </ImgRemove>
+              </ImgWrapper>
+            </li>
+          ))}
+        </Ul>
 
         <BtnWrapper>
           <Btn

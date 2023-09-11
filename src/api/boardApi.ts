@@ -47,7 +47,8 @@ export const getFile = async (fileId: number) => {
 export const createBoard = async (
   title: string,
   content: string,
-  files: File[]
+  files: File[],
+  images: File[]
 ) => {
   const formData = new FormData();
 
@@ -55,6 +56,10 @@ export const createBoard = async (
   formData.append("content", content);
   files.forEach((file) => {
     formData.append("files", file);
+  });
+
+  images.forEach((image) => {
+    formData.append("images", image);
   });
 
   const response = await axios.post(`http://localhost:8080/board`, formData, {

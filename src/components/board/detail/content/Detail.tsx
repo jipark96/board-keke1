@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from "react";
 import {
   BoardBody,
+  BoardBody2,
   BoardContent,
   BoardHeader,
+  BoardImg,
   BoardLike,
   BoardTitle,
   BoardWrapper,
@@ -23,16 +25,19 @@ import {
   getFile,
   updateLike,
 } from "../../../../api/boardApi";
+import { serverUrl } from "../../../../api/commonApi";
 
 const Detail = () => {
   const { boardId } = useParams<{ boardId: string }>();
   const [post, setPost] = useState<BoardDetailData | null>(null);
   const [isLiked, setIsLiked] = useState(false);
+
   const navigation = useNavigate();
 
   const username = localStorage.getItem("username");
   const userId = localStorage.getItem("userId");
 
+  //[게시물 가져오기]
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -135,7 +140,21 @@ const Detail = () => {
                   <BoardTitle>{post.title}</BoardTitle>
                   <BoardLike onClick={handleLike}>좋아요 👍🏻</BoardLike>
                 </BoardHeader>
-                <BoardContent>{post.content}</BoardContent>
+
+                <BoardBody2>
+                  {post.imageList && post.imageList.length > 0 && (
+                    <div>
+                      {post.imageList.map((image, index) => (
+                        <BoardImg
+                          key={index}
+                          src={serverUrl + image.imageUrl}
+                          alt={`Image ${index}`}
+                        />
+                      ))}
+                    </div>
+                  )}
+                  <BoardContent>{post.content}</BoardContent>
+                </BoardBody2>
               </TitleWrap>
             </BoardBody>
             <hr />

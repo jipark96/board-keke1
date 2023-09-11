@@ -39,6 +39,11 @@ export interface BoardDetailData {
     fileName: string;
     filePath: string;
   }[];
+  imageList?: {
+    id: number;
+    imageUrl: string;
+    imageName: string;
+  }[];
 }
 
 export interface CommentData {

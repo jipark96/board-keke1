@@ -50,10 +50,10 @@ const UserContent = () => {
 
   return (
     <Wrapper>
-      <BoardHeader>유저 리스트</BoardHeader>
+      <BoardHeader>회원 리스트</BoardHeader>
       <Container>
         <thead>
-          <TitleNumber>유저번호</TitleNumber>
+          <TitleNumber>회원번호</TitleNumber>
           <TitleMain>이메일</TitleMain>
           <TitleOther1>아이디</TitleOther1>
           <TitleNumber>이름</TitleNumber>

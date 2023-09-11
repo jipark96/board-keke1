@@ -32,7 +32,7 @@ const Sidebar = () => {
     <Container>
       <SidebarWrapper>
         <SidebarMenu>
-          <SidebarTitle>Dashboard</SidebarTitle>
+          <SidebarTitle>MyPage</SidebarTitle>
           <SidebarList>
             <SidebarListItem onClick={handleBoard}>Home</SidebarListItem>
             <SidebarListItem onClick={handleBoardWrite}>글쓰기</SidebarListItem>

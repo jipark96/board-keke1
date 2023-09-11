@@ -13,6 +13,7 @@ export const BoardHeader = styled.div`
   justify-content: space-between;
   align-items: baseline;
   display: flex;
+  margin-bottom: 10px;
 `;
 
 export const UserName = styled.div`
@@ -33,18 +34,22 @@ export const BoardBody = styled.div`
   display: flex;
 `;
 
-// export const BoardImg = styled.div`
-//   flex-shrink: 0;
-//   margin-right: 16px;
-//   width: 50%;
-//   height: 100%;
+export const BoardBody2 = styled.div`
+  display: flex;
+  margin-top: 20px;
+`;
 
-//   img {
-//     width: 100%;
-//     height: 100%;
-//     object-fit: cover;
-//   }
-// `;
+export const BoardImgWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  margin-top: 20px;
+  flex-wrap: wrap;
+`;
+
+export const BoardImg = styled.img`
+  height: 250px;
+  width: 250px;
+`;
 
 export const TitleWrap = styled.div`
   word-break: break-all;
@@ -61,6 +66,7 @@ export const BoardTitle = styled.div`
 
 export const BoardContent = styled.div`
   font-size: 16px;
+  margin-left: 20px;
 `;
 
 export const BoardLike = styled.div`
