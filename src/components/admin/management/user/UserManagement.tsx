@@ -1,8 +1,8 @@
 import React from "react";
 import Layout from "../../../../layout/Layout";
 import { Container, Wrapper } from "./UserManagementStyles";
-import Sidebar from "../../sidebar/Sidebar";
 import UserContent from "./content/UserContent";
+import Sidebar from "../../../common/sidebar/Sidebar";
 
 const UserManagement = () => {
   return (

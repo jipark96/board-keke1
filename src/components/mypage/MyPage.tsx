@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import { Box, Edit, Info, Remove, Section, Title } from "./MyPageStyles";
 import Layout from "../../layout/Layout";
 import { Link, useNavigate, useParams } from "react-router-dom";
-import axios from "axios";
 import { User } from "../../types/user.data";
 import { deleteUser, getUser } from "../../api/userApi";
 

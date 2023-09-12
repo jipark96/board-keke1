@@ -3,7 +3,7 @@ import React from "react";
 import BoardContent from "./content/BoardContent";
 import { Container, Wrapper } from "./BoardManagementStyles";
 import Layout from "../../../../layout/Layout";
-import Sidebar from "../../sidebar/Sidebar";
+import Sidebar from "../../../common/sidebar/Sidebar";
 
 const BoardManagement = () => {
   return (

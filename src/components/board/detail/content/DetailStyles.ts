@@ -65,8 +65,8 @@ export const BoardTitle = styled.div`
 `;
 
 export const BoardContent = styled.div`
-  font-size: 16px;
-  margin-left: 20px;
+  font-size: 18px;
+  margin-left: 24px;
 `;
 
 export const BoardLike = styled.div`

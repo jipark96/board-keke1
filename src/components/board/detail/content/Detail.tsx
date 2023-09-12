@@ -5,6 +5,7 @@ import {
   BoardContent,
   BoardHeader,
   BoardImg,
+  BoardImgWrapper,
   BoardLike,
   BoardTitle,
   BoardWrapper,
@@ -143,7 +144,7 @@ const Detail = () => {
 
                 <BoardBody2>
                   {post.imageList && post.imageList.length > 0 && (
-                    <div>
+                    <BoardImgWrapper>
                       {post.imageList.map((image, index) => (
                         <BoardImg
                           key={index}
@@ -151,7 +152,7 @@ const Detail = () => {
                           alt={`Image ${index}`}
                         />
                       ))}
-                    </div>
+                    </BoardImgWrapper>
                   )}
                   <BoardContent>{post.content}</BoardContent>
                 </BoardBody2>

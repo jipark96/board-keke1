@@ -1,8 +1,9 @@
 import React from "react";
-import Sidebar from "./sidebar/Sidebar";
+
 import Layout from "../../layout/Layout";
 import { Container } from "./AdminStyles";
 import Content from "./content/Content";
+import Sidebar from "../common/sidebar/Sidebar";
 
 const Admin = () => {
   return (

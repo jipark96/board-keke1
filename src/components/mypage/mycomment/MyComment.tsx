@@ -1,21 +1,20 @@
 import React from "react";
+import MyCommentContent from "./content/MyCommentContent";
 import Layout from "../../../layout/Layout";
-import { Container } from "./DetailStyles";
+import { Container, Wrapper } from "./MyCommentStyles";
 import Sidebar from "../../common/sidebar/Sidebar";
-import { Wrapper } from "../BoardStyles";
-import Detail from "./content/Detail";
 
-const Details = () => {
+const MyComment = () => {
   return (
     <Layout>
       <Container>
         <Sidebar />
         <Wrapper>
-          <Detail />
+          <MyCommentContent />
         </Wrapper>
       </Container>
     </Layout>
   );
 };
 
-export default Details;
+export default MyComment;

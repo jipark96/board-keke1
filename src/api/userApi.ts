@@ -103,3 +103,18 @@ export const getUserBoard = async (
   );
   return response.data.result;
 };
+
+//[내가 쓴 댓글 게시글 조회]
+export const getUserComment = async (userId: string) => {
+  const jwtToken = localStorage.getItem("jwtToken");
+
+  const response = await axios.get(
+    `http://localhost:8080/user/${userId}/comment/board`,
+    {
+      headers: {
+        "X-ACCESS-TOKEN": jwtToken,
+      },
+    }
+  );
+  return response.data.result;
+};
