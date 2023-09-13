@@ -1,28 +1,40 @@
 import React, { useEffect, useState } from "react";
 import {
   BtnWrapper,
+  Image,
+  ImgRemove,
+  ImgWrapper,
   LargeTextFieldInput,
   LargeTextFieldTitle,
   Remove,
   TextFieldInput,
   TextFieldWrap,
+  Ul,
   Wrapper,
 } from "./EditStyles";
 import Btn from "../../common/btn/Btn";
 import { useNavigate, useParams } from "react-router-dom";
 import Layout from "../../../layout/Layout";
-import axios from "axios";
 import TextField from "../../common/textfield/TextField";
 import { getBoard, patchBoard } from "../../../api/boardApi";
+import { serverUrl } from "../../../api/commonApi";
 
 const Edit = () => {
   const { boardId } = useParams();
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
+
   const [originFiles, setOriginFiles] = useState<string[]>([]);
   const [files, setFiles] = useState<File[]>([]);
   const [selectedFiles, setSelectedFiles] = useState<string[]>([]);
   const [removedOriginFiles, setRemovedOriginFiles] = useState<string[]>([]);
+
+  const [originImagesUrl, setOriginImagesUrl] = useState<string[]>([]);
+  const [images, setImages] = useState<File[]>([]);
+  const [selectedImageUrls, setSelectedImageUrls] = useState<string[]>([]);
+  const [removedOriginImageUrls, setRemovedOriginImageUrls] = useState<
+    string[]
+  >([]);
 
   const navigation = useNavigate();
 
@@ -81,6 +93,56 @@ const Edit = () => {
     setRemovedOriginFiles([...removedOriginFiles, removedFile]);
   };
 
+  //[이미지 업로드]
+  const handleImageUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
+    if (event.target.files) {
+      // 이미지 파일들을 배열로 변환
+      const newImages = Array.from(event.target.files);
+
+      // 기존 이미지 목록에 새로운 이미지들 추가
+      setImages([...images, ...newImages]);
+
+      // Blob URL 생성 후 selectedImageUrls 상태 업데이트
+      const newImageUrls = newImages.map((image) => URL.createObjectURL(image));
+      setSelectedImageUrls([...selectedImageUrls, ...newImageUrls]);
+    }
+  };
+
+  //[이미지 삭제]
+  const handleImageRemove = (index: number) => {
+    // 선택한 파일 상태에서 해당 인덱스의 파일 이름을 제외한 나머지 파일들을 선택
+    const updatedSelectedImages = selectedImageUrls.filter(
+      (_image, idx) => idx !== index
+    );
+    setSelectedImageUrls(updatedSelectedImages);
+
+    const removedImageUrl = selectedImageUrls[index];
+    const updatedRemovedOriginImageUrls = [
+      ...removedOriginImageUrls,
+      removedImageUrl,
+    ];
+    setRemovedOriginImageUrls(updatedRemovedOriginImageUrls);
+
+    const updatedImages = images.filter((_file, idx) => idx !== index);
+    setImages(updatedImages);
+  };
+
+  //[기존 이미지 삭제]
+  const handleOriginImageRemove = (index: number) => {
+    const removedImageUrl = originImagesUrl[index];
+
+    const updatedOriginImagesUrl = originImagesUrl.filter(
+      (_image, idx) => idx !== index
+    );
+    setOriginImagesUrl(updatedOriginImagesUrl);
+
+    const updatedRemovedOriginImageUrls = [
+      ...removedOriginImageUrls,
+      removedImageUrl,
+    ];
+    setRemovedOriginImageUrls(updatedRemovedOriginImageUrls);
+  };
+
   //[기존 글 가져오기]
   useEffect(() => {
     const fetchPost = async () => {
@@ -93,6 +155,11 @@ const Edit = () => {
 
           if (result.fileList) {
             setOriginFiles(result.fileList.map((file: any) => file.fileName));
+          }
+          if (result.imageList) {
+            setOriginImagesUrl(
+              result.imageList.map((image: any) => image.imageUrl)
+            );
           }
         }
       } catch (error) {
@@ -107,7 +174,15 @@ const Edit = () => {
   const handlePatchClick = async () => {
     try {
       if (boardId) {
-        await patchBoard(boardId, title, content, files, removedOriginFiles);
+        await patchBoard(
+          boardId,
+          title,
+          content,
+          files,
+          removedOriginFiles,
+          images,
+          removedOriginImageUrls
+        );
       }
 
       navigation("/board");
@@ -144,7 +219,7 @@ const Edit = () => {
           onChange={handleFileChange}
           multiple
         />
-        <ul>
+        <Ul>
           {originFiles &&
             originFiles.map((fileName, index) => (
               <li key={`originFile-${index}`}>
@@ -154,15 +229,47 @@ const Edit = () => {
                 </Remove>
               </li>
             ))}
-        </ul>
-        <ul>
+        </Ul>
+        <Ul>
           {selectedFiles.map((fileName, index) => (
             <li key={index}>
               {fileName}
               <Remove onClick={() => handleFileRemove(index)}>&times;</Remove>
             </li>
           ))}
-        </ul>
+        </Ul>
+
+        <TextField
+          title="이미지"
+          type="file"
+          placeholder="이미지 파일을 올려주세요."
+          onChange={handleImageUpload}
+          multiple
+        />
+        <Ul>
+          {originImagesUrl.map((imageUrl, index) => (
+            <li key={index}>
+              <ImgWrapper>
+                <Image src={serverUrl + imageUrl} alt="Uploaded" />{" "}
+                <ImgRemove onClick={() => handleOriginImageRemove(index)}>
+                  {" "}
+                  &times;
+                </ImgRemove>
+              </ImgWrapper>
+            </li>
+          ))}
+        </Ul>
+        <Ul>
+          {selectedImageUrls.map((imageUrl, index) => (
+            <ImgWrapper>
+              <Image src={imageUrl} alt="Uploaded" />{" "}
+              <ImgRemove onClick={() => handleImageRemove(index)}>
+                {" "}
+                &times;
+              </ImgRemove>
+            </ImgWrapper>
+          ))}
+        </Ul>
         <BtnWrapper>
           <Btn
             text="수정"

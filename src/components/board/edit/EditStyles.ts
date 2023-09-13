@@ -81,3 +81,21 @@ export const Remove = styled.span`
   font-size: 16px;
   cursor: pointer;
 `;
+
+export const Ul = styled.ul`
+  list-style: none;
+  gap: 20px;
+`;
+
+export const ImgWrapper = styled.div`
+  display: inline-flex;
+`;
+export const Image = styled.img`
+  width: 250px;
+  height: 250px;
+`;
+export const ImgRemove = styled.span`
+  margin-left: 10px;
+  font-size: 20px;
+  cursor: pointer;
+`;

@@ -80,7 +80,9 @@ export const patchBoard = async (
   title: string,
   content: string,
   files: File[],
-  removedOriginFiles: string[]
+  removedOriginFiles: string[],
+  images: File[],
+  removedOriginImageUrls: string[]
 ) => {
   const formData = new FormData();
 
@@ -96,6 +98,16 @@ export const patchBoard = async (
   if (removedOriginFiles.length > 0) {
     let deleted_list = JSON.stringify(removedOriginFiles);
     formData.append("deleted", deleted_list);
+  }
+
+  // 이미지 파일과 지워야 할 이미지 URL 목록 전송
+  images.forEach((image) => {
+    formData.append("images", image);
+  });
+
+  if (removedOriginImageUrls.length > 0) {
+    let deleted_image_urls = JSON.stringify(removedOriginImageUrls);
+    formData.append("deletedImages", deleted_image_urls);
   }
 
   const response = await axios.patch(
