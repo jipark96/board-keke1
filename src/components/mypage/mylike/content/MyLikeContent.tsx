@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { BoardListData } from "../../../../types/board.data";
 import { useNavigate } from "react-router-dom";
-import { getUserComment } from "../../../../api/userApi";
+import { getLikeBoard } from "../../../../api/userApi";
+import { formatDate } from "../../../../utils/Utils";
 import {
   BoardHeader,
   Container,
@@ -12,10 +13,9 @@ import {
   TitleOther2,
   TitleOther3,
   Wrapper,
-} from "./MyCommentCotentStyles";
-import { formatDate } from "../../../../utils/Utils";
+} from "./MyLikeContentStyles";
 
-const MyCommentContent = () => {
+const MyLikeContent = () => {
   const [posts, setPosts] = useState<BoardListData[]>([]);
 
   const userId = localStorage.getItem("userId");
@@ -26,7 +26,7 @@ const MyCommentContent = () => {
     const fetchPosts = async () => {
       try {
         if (userId) {
-          const result = await getUserComment(userId);
+          const result = await getLikeBoard(userId);
           setPosts(result.boardList);
         }
       } catch (error) {
@@ -72,4 +72,4 @@ const MyCommentContent = () => {
   );
 };
 
-export default MyCommentContent;
+export default MyLikeContent;

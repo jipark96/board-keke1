@@ -31,6 +31,10 @@ const Sidebar = () => {
     navigation(`/mypage/mycomment/${userId}`);
   };
 
+  const handleMyLike = () => {
+    navigation(`/mypage/mylike/${userId}`);
+  };
+
   const handleBoardManagement = () => {
     navigation("/admin/management/board");
   };
@@ -52,6 +56,9 @@ const Sidebar = () => {
             </SidebarListItem>
             <SidebarListItem onClick={handleMyComment}>
               내 댓글 보기
+            </SidebarListItem>
+            <SidebarListItem onClick={handleMyLike}>
+              좋아요 글 보기
             </SidebarListItem>
           </SidebarList>
         </SidebarMenu>

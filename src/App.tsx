@@ -13,6 +13,7 @@ import BoardManagementPage from "./pages/admin/management/board/BoardManagement"
 import UserManagementPage from "./pages/admin/management/user/UserManagement";
 import MyBoardPage from "./pages/mypage/myBoard/MyBoard";
 import MyCommentPage from "./pages/mypage/mycomment/MyComment";
+import MyLikePage from "./pages/mypage/mylike/MyLike";
 
 const loading = <div>화면을 불러오는 중 입니다.</div>;
 
@@ -37,6 +38,7 @@ const App: React.FunctionComponent = () => {
           <Route path="/mypage/edit/:userId" element={<EditMyPage />} />
           <Route path="/mypage/myboard/:userId" element={<MyBoardPage />} />
           <Route path="/mypage/mycomment/:userId" element={<MyCommentPage />} />
+          <Route path="/mypage/mylike/:userId" element={<MyLikePage />} />
           <Route path="/admin" element={<AdminPage />} />
           <Route
             path="/admin/management/board"
