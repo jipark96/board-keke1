@@ -38,3 +38,21 @@ export const Remove = styled.div`
   text-decoration-line: underline;
   cursor: pointer;
 `;
+
+export const ImageContainer = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 20px;
+  margin-bottom: 20px;
+`;
+export const ImgWrap = styled.div`
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
+
+export const Image = styled.img`
+  border-radius: 50%;
+`;

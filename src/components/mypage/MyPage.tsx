@@ -1,22 +1,36 @@
 import React, { useEffect, useState } from "react";
-import { Box, Edit, Info, Remove, Section, Title } from "./MyPageStyles";
+import {
+  Box,
+  Edit,
+  Image,
+  ImageContainer,
+  ImgWrap,
+  Info,
+  Remove,
+  Section,
+  Title,
+} from "./MyPageStyles";
 import Layout from "../../layout/Layout";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { User } from "../../types/user.data";
 import { deleteUser, getUser } from "../../api/userApi";
+
+import profileImg from "../../assets/profileImg.svg";
+import { serverUrl } from "../../api/commonApi";
 
 const MyPageProps = {
   id: 0,
   name: "",
   username: "",
   email: "",
+  imageUrl: "",
+  imageName: "",
 };
 
 const MyPage = () => {
   const { userId } = useParams<{ userId: string }>();
   const [userInfo, setUserInfo] = useState<User>(MyPageProps);
   const navigation = useNavigate();
-  const jwtToken = localStorage.getItem("jwtToken");
 
   //[회원 탈퇴]
   const handleDelete = async () => {
@@ -57,6 +71,16 @@ const MyPage = () => {
     <Layout>
       <Section>
         <Title>프로필</Title>
+        <ImageContainer>
+          <ImgWrap>
+            <Image
+              src={serverUrl + userInfo?.imageUrl || profileImg}
+              width={120}
+              height={120}
+              alt="profile"
+            />
+          </ImgWrap>
+        </ImageContainer>
         <Info>이름 : {userInfo?.name}</Info>
         <Info>아이디 : {userInfo?.username}</Info>
         <Info>email : {userInfo?.email}</Info>

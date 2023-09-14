@@ -5,25 +5,37 @@ import {
   EditCotainer,
   EditTitle,
   EditWrap,
+  Image,
+  ImageContainer,
+  ImgBtn,
+  ImgFile,
+  ImgWrap,
   LargeTextFieldTitle,
   TextFieldInput,
   TextFieldWrap,
+  TextFieldWrap1,
 } from "./EditStyles";
 
 import PasswordField from "../../common/passwordfield/PasswordField";
 import Btn from "../../common/btn/Btn";
 import { getUser, patchUser } from "../../../api/userApi";
+import EmailField from "../../common/emailfield/EmailField";
+import edit from "../../../assets/edit.svg";
+import profileImg from "../../../assets/profileImg.svg";
 
 const Edit = () => {
   const { userId } = useParams();
   const [email, setEmail] = useState("");
   const [name, setName] = useState("");
   const [password, setPassword] = useState("");
+  const [selectedFile, setSelectedFile] = useState<File | null>(null);
+  const [previewUrl, setPreviewUrl] = useState<string>("");
+
   const navigation = useNavigate();
 
   //[이메일]
-  const handleEmailChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setEmail(event.target.value);
+  const handleEmailChange = (value: string) => {
+    setEmail(value);
   };
 
   //[이름]
@@ -34,6 +46,20 @@ const Edit = () => {
   //[비밀번호]
   const handlePasswordChange = (value: string) => {
     setPassword(value);
+  };
+
+  //[프로필 사진]
+  const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    if (event.target.files && event.target.files.length > 0) {
+      const file = event.target.files[0];
+      setSelectedFile(file);
+
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setPreviewUrl(reader.result as string);
+      };
+      reader.readAsDataURL(file);
+    }
   };
 
   //[기존 정보 가져오기]
@@ -57,7 +83,16 @@ const Edit = () => {
   const handlePatchClick = async () => {
     try {
       if (userId) {
-        await patchUser(userId, email, name, password);
+        const formData = new FormData();
+        formData.append("email", email);
+        formData.append("name", name);
+        formData.append("password", password);
+
+        if (selectedFile) {
+          formData.append("image", selectedFile);
+        }
+
+        await patchUser(userId, formData);
 
         navigation("/");
       }
@@ -71,15 +106,30 @@ const Edit = () => {
       <EditCotainer>
         <EditTitle>회원 정보 수정</EditTitle>
         <EditWrap>
-          <TextFieldWrap>
-            <LargeTextFieldTitle>이메일</LargeTextFieldTitle>
-            <TextFieldInput
-              placeholder="이메일"
+          <ImageContainer>
+            <ImgWrap>
+              <Image
+                src={previewUrl || profileImg}
+                width={180}
+                height={180}
+                alt="profile"
+              />
+              <ImgBtn>
+                <ImgFile type="file" onChange={handleImageChange} />
+                <Image src={edit} width={24} height={24} alt="edit" />
+              </ImgBtn>
+            </ImgWrap>
+          </ImageContainer>
+
+          <TextFieldWrap1>
+            <EmailField
+              title="이메일"
               type="email"
-              value={email}
-              onChange={handleEmailChange}
+              placeholder="이메일을 입력해주세요"
+              required="올바른 이메일 형식을 입력해주세요."
+              onValueChange={handleEmailChange}
             />
-          </TextFieldWrap>
+          </TextFieldWrap1>
           <TextFieldWrap>
             <LargeTextFieldTitle>이름</LargeTextFieldTitle>
             <TextFieldInput

@@ -23,23 +23,13 @@ export const getUserList = async () => {
 };
 
 //[회원 수정]
-export const patchUser = async (
-  userId: string,
-  email: string,
-  name: string,
-  password: string
-) => {
+export const patchUser = async (userId: string, formData: FormData) => {
   const jwtToken = localStorage.getItem("jwtToken");
 
-  const requestData = {
-    email,
-    name,
-    password,
-  };
-
-  await axios.patch(`http://localhost:8080/user/edit/${userId}`, requestData, {
+  await axios.patch(`http://localhost:8080/user/edit/${userId}`, formData, {
     headers: {
       "X-ACCESS-TOKEN": jwtToken,
+      "Content-Type": "multipart/form-data",
     },
   });
 };
