@@ -74,7 +74,9 @@ const MyPage = () => {
         <ImageContainer>
           <ImgWrap>
             <Image
-              src={serverUrl + userInfo?.imageUrl || profileImg}
+              src={
+                userInfo?.imageUrl ? serverUrl + userInfo.imageUrl : profileImg
+              }
               width={120}
               height={120}
               alt="profile"
