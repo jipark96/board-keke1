@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useEffect, useMemo, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { BoardListData } from "../../../../../types/board.data";
 import { deleteBoard, getBoardList } from "../../../../../api/boardApi";
 import {
@@ -29,7 +29,7 @@ import Btn from "../../../../common/btn/Btn";
 const BoardContent = () => {
   const [posts, setPosts] = useState<BoardListData[]>([]);
   const [currentPage, setCurrentPage] = useState<number>(0);
-  const [totalPages, setTotalPages] = useState<number>(0);
+  const [totalCount, setTotalCount] = useState<number>(0);
   const [searchKeyword, setSearchKeyword] = useState<string>("");
   const [sortType, setSortType] = useState<string>("");
 
@@ -45,9 +45,7 @@ const BoardContent = () => {
 
       setPosts(result.boardList);
 
-      const totalCount = result.totalCount;
-      const totalPages = Math.ceil(totalCount / 8);
-      setTotalPages(totalPages);
+      setTotalCount(result.totalCount);
     } catch (error) {
       console.error("게시물 가져오기 오류:", error);
     }
@@ -68,9 +66,7 @@ const BoardContent = () => {
         setPosts(result.boardList);
 
         // 전체 페이지 수 계산
-        const totalCount = result.totalCount;
-        const totalPages = Math.ceil(totalCount / 8);
-        setTotalPages(totalPages);
+        setTotalCount(result.totalCount);
       } catch (error) {
         console.error("Error deleting post:", error);
       }
@@ -121,13 +117,14 @@ const BoardContent = () => {
       );
       setPosts(result.boardList);
       // 전체 페이지 수 계산
-      const totalCount = result.totalCount;
-      const totalPages = Math.ceil(totalCount / 8);
-      setTotalPages(totalPages);
+      setTotalCount(result.totalCount);
     } catch (error) {
       console.error("Error fetching posts:", error);
     }
   };
+
+  // totalCount 값이 변경될 때만 totalPages 값을 다시 계산
+  const totalPages = useMemo(() => Math.ceil(totalCount / 8), [totalCount]);
 
   useEffect(() => {
     const fetchPosts = async () => {
@@ -136,9 +133,7 @@ const BoardContent = () => {
         setPosts(result.boardList);
 
         // 전체 페이지 수 계산
-        const totalCount = result.totalCount;
-        const totalPages = Math.ceil(totalCount / 8);
-        setTotalPages(totalPages);
+        setTotalCount(result.totalCount);
       } catch (error) {
         console.error("Error fetching posts:", error);
       }

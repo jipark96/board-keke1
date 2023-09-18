@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import {
   BoardHeader,
   BtnWrapper,
@@ -30,7 +30,7 @@ import Btn from "../../../common/btn/Btn";
 const MyBoardContent = () => {
   const [posts, setPosts] = useState<BoardListData[]>([]);
   const [currentPage, setCurrentPage] = useState<number>(0);
-  const [totalPages, setTotalPages] = useState<number>(0);
+  const [totalCount, setTotalCount] = useState<number>(0);
   const [searchKeyword, setSearchKeyword] = useState<string>("");
   const [sortType, setSortType] = useState<string>("");
 
@@ -53,9 +53,7 @@ const MyBoardContent = () => {
         );
         setPosts(result.boardList);
 
-        const totalCount = result.totalCount;
-        const totalPages = Math.ceil(totalCount / 8);
-        setTotalPages(totalPages);
+        setTotalCount(result.totalCount);
       }
     } catch (error) {
       console.log(error);
@@ -79,9 +77,7 @@ const MyBoardContent = () => {
           setPosts(result.boardList);
 
           // 전체 페이지 수 계산
-          const totalCount = result.totalCount;
-          const totalPages = Math.ceil(totalCount / 8);
-          setTotalPages(totalPages);
+          setTotalCount(result.totalCount);
         }
       } catch (error) {
         console.error(error);
@@ -130,14 +126,15 @@ const MyBoardContent = () => {
         setPosts(result.boardList);
 
         // 전체 페이지 수 계산
-        const totalCount = result.totalCount;
-        const totalPages = Math.ceil(totalCount / 8);
-        setTotalPages(totalPages);
+        setTotalCount(result.totalCount);
       }
     } catch (error) {
       console.log(error);
     }
   };
+
+  // totalCount 값이 변경될 때만 totalPages 값을 다시 계산
+  const totalPages = useMemo(() => Math.ceil(totalCount / 8), [totalCount]);
 
   //[게시물 조회]
   useEffect(() => {
@@ -154,9 +151,7 @@ const MyBoardContent = () => {
           setPosts(result.boardList);
 
           // 전체 페이지 수 계산
-          const totalCount = result.totalCount;
-          const totalPages = Math.ceil(totalCount / 8);
-          setTotalPages(totalPages);
+          setTotalCount(result.totalCount);
         }
       } catch (error) {
         console.error(error);
