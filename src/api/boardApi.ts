@@ -1,4 +1,5 @@
 import axios from "axios";
+import { serverUrl } from "./commonApi";
 
 const jwtToken = localStorage.getItem("jwtToken");
 const username = localStorage.getItem("username");
@@ -11,14 +12,14 @@ export const getBoardList = async (
   sortType: string = ""
 ) => {
   const response = await axios.get(
-    `http://localhost:8080/board?page=${page}&size=${size}&keyword=${keyword}&sortType=${sortType}`
+    `${serverUrl}/board?page=${page}&size=${size}&keyword=${keyword}&sortType=${sortType}`
   );
   return response.data.result;
 };
 
 //[게시판 상세 정보 가져오기]
 export const getBoard = async (boardId: string) => {
-  const response = await axios.get(`http://localhost:8080/board/${boardId}`, {
+  const response = await axios.get(`${serverUrl}/board/${boardId}`, {
     withCredentials: true,
   });
   return response.data.result;
@@ -26,20 +27,17 @@ export const getBoard = async (boardId: string) => {
 
 //[게시판 글 삭제]
 export const deleteBoard = async (boardId: string) => {
-  await axios.delete(`http://localhost:8080/board/${boardId}`, {
+  await axios.delete(`${serverUrl}/board/${boardId}`, {
     withCredentials: true,
   });
 };
 
 //[파일 다운로드]
 export const getFile = async (fileId: number) => {
-  const response = await axios.get(
-    `http://localhost:8080/file/download/${fileId}`,
-    {
-      responseType: "blob", // 서버에서 바이너리 데이터인 파일을 받기 위해 responseType을 blob으로 설정
-      withCredentials: true,
-    }
-  );
+  const response = await axios.get(`${serverUrl}/file/download/${fileId}`, {
+    responseType: "blob", // 서버에서 바이너리 데이터인 파일을 받기 위해 responseType을 blob으로 설정
+    withCredentials: true,
+  });
   return response.data;
 };
 
@@ -62,7 +60,7 @@ export const createBoard = async (
     formData.append("images", image);
   });
 
-  const response = await axios.post(`http://localhost:8080/board`, formData, {
+  const response = await axios.post(`${serverUrl}/board`, formData, {
     headers: {
       Authorization: `Bearer ${jwtToken}`,
       "Content-Type": "multipart/form-data",
@@ -111,7 +109,7 @@ export const patchBoard = async (
   }
 
   const response = await axios.patch(
-    `http://localhost:8080/board/edit/${boardId}`,
+    `${serverUrl}/board/edit/${boardId}`,
     formData,
     {
       headers: {
@@ -124,7 +122,7 @@ export const patchBoard = async (
 
 //[좋아요]
 export const updateLike = async (boardId: string, userId: string) => {
-  const response = await axios.post(`http://localhost:8080/like`, {
+  const response = await axios.post(`${serverUrl}/like`, {
     boardId,
     userId,
   });

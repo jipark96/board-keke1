@@ -1,4 +1,5 @@
 import axios from "axios";
+import { serverUrl } from "./commonApi";
 
 const jwtToken = localStorage.getItem("jwtToken");
 const username = localStorage.getItem("username");
@@ -6,7 +7,7 @@ const username = localStorage.getItem("username");
 //[댓글 생성]
 export const createComment = async (boardId: string, content: string) => {
   const response = await axios.post(
-    `http://localhost:8080/board/${boardId}/comment`,
+    `${serverUrl}/board/${boardId}/comment`,
     {
       boardId,
       content,
@@ -25,14 +26,11 @@ export const createComment = async (boardId: string, content: string) => {
 
 //[댓글 삭제]
 export const deleteComment = async (boardId: string, commentId: number) => {
-  await axios.delete(
-    `http://localhost:8080/board/${boardId}/comment/${commentId}`,
-    {
-      headers: {
-        Authorization: `Bearer ${jwtToken}`,
-      },
-    }
-  );
+  await axios.delete(`${serverUrl}/board/${boardId}/comment/${commentId}`, {
+    headers: {
+      Authorization: `Bearer ${jwtToken}`,
+    },
+  });
 };
 
 //[댓글 수정]
@@ -42,7 +40,7 @@ export const patchComment = async (
   editedContent: string
 ) => {
   await axios.patch(
-    `http://localhost:8080/board/${boardId}/comment/${commentId}`,
+    `${serverUrl}/board/${boardId}/comment/${commentId}`,
     { content: editedContent },
     { headers: { Authorization: `Bearer ${jwtToken}` } }
   );
@@ -55,7 +53,7 @@ export const createReply = async (
   parentId: number
 ) => {
   const response = await axios.post(
-    `http://localhost:8080/board/${boardId}/comment/${parentId}`,
+    `${serverUrl}/board/${boardId}/comment/${parentId}`,
     {
       boardId,
       content: replyContent,
