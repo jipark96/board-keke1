@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import {
   BoardBody,
   BoardBody2,
@@ -69,7 +69,7 @@ const Detail = () => {
   };
 
   //[파일 다운로드]
-  const downloadFile = async (fileId: number, fileName: string) => {
+  const downloadFile = useCallback(async (fileId: number, fileName: string) => {
     try {
       const result = await getFile(fileId);
 
@@ -82,11 +82,10 @@ const Detail = () => {
       link.setAttribute("download", fileName); // 파일 이름 설정
       document.body.appendChild(link); // <a> 요소를 문서(body)에 추가
       link.click(); // 링크 클릭하여 파일 다운로드 실행
-      link.remove(); // 링크 요소를 제거하여 문서에서 제거
     } catch (error) {
       console.error("Error downloading file:", error);
     }
-  };
+  }, []);
 
   //[좋아요]
   const handleLike = async () => {
