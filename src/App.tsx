@@ -45,7 +45,16 @@ const App: React.FunctionComponent = () => {
           />
           <Route path="/board/edit/:boardId" element={<EditPage />} />
           <Route path="/board/:boardId" element={<DetailPage />} />
-          <Route path="/mypage/:userId" element={<MyPagePage />} />
+          <Route
+            path="/mypage/:userId"
+            element={
+              role === "USER" || role === "ADMIN" ? (
+                <MyPagePage />
+              ) : (
+                <Navigate to="/login" />
+              )
+            }
+          />
           <Route
             path="/mypage/edit/:userId"
             element={

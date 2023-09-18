@@ -43,6 +43,10 @@ const Sidebar = () => {
     navigation("/admin/management/user");
   };
 
+  const handleMyPage = () => {
+    navigation(`/mypage/${userId}`);
+  };
+
   return (
     <Container>
       <SidebarWrapper>
@@ -51,6 +55,7 @@ const Sidebar = () => {
           <SidebarList>
             <SidebarListItem onClick={handleBoard}>Home</SidebarListItem>
             <SidebarListItem onClick={handleBoardWrite}>글쓰기</SidebarListItem>
+            <SidebarListItem onClick={handleMyPage}>내정보</SidebarListItem>
             <SidebarListItem onClick={handleMyBoard}>
               내 글 보기
             </SidebarListItem>
