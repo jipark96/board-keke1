@@ -1,5 +1,5 @@
 import React, { Suspense } from "react";
-import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 import JoinPage from "./pages/join/Join";
 import LoginPage from "./pages/login/Login";
 import BoardListPage from "./pages/board/BoardList";
@@ -23,6 +23,8 @@ const Page500 = React.lazy(() => import("./pages/page500/Page500"));
 
 //컴포넌트
 const App: React.FunctionComponent = () => {
+  const role = localStorage.getItem("role");
+
   return (
     <BrowserRouter>
       <Suspense fallback={loading}>
@@ -31,22 +33,78 @@ const App: React.FunctionComponent = () => {
           <Route path="/join" element={<JoinPage />} />
           <Route path="/board" element={<BoardListPage />} />
           <Route path="/" element={<BoardListPage />} />
-          <Route path="/board/write" element={<WritePage />} />
+          <Route
+            path="/board/write"
+            element={
+              role === "USER" || role === "ADMIN" ? (
+                <WritePage />
+              ) : (
+                <Navigate to="/login" />
+              )
+            }
+          />
           <Route path="/board/edit/:boardId" element={<EditPage />} />
           <Route path="/board/:boardId" element={<DetailPage />} />
           <Route path="/mypage/:userId" element={<MyPagePage />} />
-          <Route path="/mypage/edit/:userId" element={<EditMyPage />} />
-          <Route path="/mypage/myboard/:userId" element={<MyBoardPage />} />
-          <Route path="/mypage/mycomment/:userId" element={<MyCommentPage />} />
-          <Route path="/mypage/mylike/:userId" element={<MyLikePage />} />
-          <Route path="/admin" element={<AdminPage />} />
+          <Route
+            path="/mypage/edit/:userId"
+            element={
+              role === "USER" || role === "ADMIN" ? (
+                <EditMyPage />
+              ) : (
+                <Navigate to="/login" />
+              )
+            }
+          />
+          <Route
+            path="/mypage/myboard/:userId"
+            element={
+              role === "USER" || role === "ADMIN" ? (
+                <MyBoardPage />
+              ) : (
+                <Navigate to="/login" />
+              )
+            }
+          />
+          <Route
+            path="/mypage/mycomment/:userId"
+            element={
+              role === "USER" || role === "ADMIN" ? (
+                <MyCommentPage />
+              ) : (
+                <Navigate to="/login" />
+              )
+            }
+          />
+          <Route
+            path="/mypage/mylike/:userId"
+            element={
+              role === "USER" || role === "ADMIN" ? (
+                <MyLikePage />
+              ) : (
+                <Navigate to="/login" />
+              )
+            }
+          />
+          <Route
+            path="/admin"
+            element={role === "ADMIN" ? <AdminPage /> : <Navigate to="/500" />}
+          />
           <Route
             path="/admin/management/board"
-            element={<BoardManagementPage />}
+            element={
+              role === "ADMIN" ? (
+                <BoardManagementPage />
+              ) : (
+                <Navigate to="/500" />
+              )
+            }
           />
           <Route
             path="/admin/management/user"
-            element={<UserManagementPage />}
+            element={
+              role === "ADMIN" ? <UserManagementPage /> : <Navigate to="/500" />
+            }
           />
           <Route path="/404" element={<Page404 />} />
           <Route path="/500" element={<Page500 />} />
