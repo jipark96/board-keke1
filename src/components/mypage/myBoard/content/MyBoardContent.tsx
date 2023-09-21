@@ -158,7 +158,7 @@ const MyBoardContent = () => {
       }
     };
     fetchPosts(); // 컴포넌트가 마운트되었을 때 게시물 목록을 불러옴
-  }, [currentPage, sortType]);
+  }, [currentPage, sortType, userId]);
 
   return (
     <>

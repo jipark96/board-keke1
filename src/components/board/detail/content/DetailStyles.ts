@@ -42,13 +42,13 @@ export const BoardBody2 = styled.div`
 export const BoardImgWrapper = styled.div`
   display: flex;
   flex-direction: column;
-  margin-top: 20px;
   flex-wrap: wrap;
 `;
 
 export const BoardImg = styled.img`
   height: 250px;
   width: 250px;
+  margin-top: 20px;
 `;
 
 export const TitleWrap = styled.div`
@@ -67,6 +67,7 @@ export const BoardTitle = styled.div`
 export const BoardContent = styled.div`
   font-size: 18px;
   margin-left: 24px;
+  margin-top: 20px;
 `;
 
 export const BoardLike = styled.div`
